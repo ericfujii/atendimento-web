@@ -2,8 +2,10 @@ package br.com.ericfujii.bean;
 
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -33,6 +35,8 @@ public class ProdutoTipoCadastroBean {
         session.save(produtoTipo);
  
         session.getTransaction().commit();
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto cadastrado com sucesso!", ""));
  
         Query q = session.createQuery("From ProdutoTipo ");
                  
