@@ -36,15 +36,18 @@ public class ProdutoTipoCadastroBean {
  
         session.getTransaction().commit();
         
+        produtoTipo = new ProdutoTipo();
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto cadastrado com sucesso!", ""));
  
-        Query q = session.createQuery("From ProdutoTipo ");
+        
+/*        Query q = session.createQuery("From ProdutoTipo ");
                  
         List<ProdutoTipo> resultList = q.list();
         System.out.println("Quantidade de Tipos:" + resultList.size());
         for (ProdutoTipo next : resultList) {
             System.out.println("Tipo: " + next.getNome());
-        }
+        }*/
 	}
 	
 }
