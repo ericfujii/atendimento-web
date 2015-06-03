@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" >
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="/AtendimentoWeb/faces/style/principal.css" />
+	</h:head>
+
+	<body>
+		<ui:include src="../../menu.xhtml" />
+		<div id="conteudo">
+			<h:form prependId="false">
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				<h:outputText value="Nome :" />
+				<br/>
+				<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
+				<br/>
+				<p:commandButton styleClass="button" id="commit" update="tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="false" value="Salvar Tipo Produto"/>
+				<br/>
+				<p:accordionPanel>
+	        		<p:tab title="Listagem">
+	        			<p:dataTable id="tabelaTipos" var="tipo" value="#{produtoTipoCadastroBean.produtoTipos}" rowIndexVar="i">
+						    <p:column headerText="Id">
+						        <h:outputText value="#{tipo.id}" />
+						    </p:column>
+						 
+						    <p:column headerText="Nome">
+						        <h:outputText value="#{tipo.nome}" />
+						    </p:column>
+						    
+						    <p:column headerText="Opções">
+						        <p:commandLink action="#{produtoTipoCadastroBean.editar(i)}" update="nome" value="Editar" />
+						        <p:commandLink action="#{produtoTipoCadastroBean.excluir(i)}" update="tabelaTipos" value="Excluir" />
+						    </p:column>
+						</p:dataTable>
+	        		</p:tab>
+	    		</p:accordionPanel>
+    		</h:form>
+		</div>
+	</body>
+	
+</html>

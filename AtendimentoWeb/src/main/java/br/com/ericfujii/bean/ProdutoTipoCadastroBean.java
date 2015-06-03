@@ -2,6 +2,7 @@ package br.com.ericfujii.bean;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -18,13 +19,27 @@ import br.com.ericfujii.hibernate.HibernateUtil;
 public class ProdutoTipoCadastroBean {
 
 	private ProdutoTipo produtoTipo = new ProdutoTipo();
+	private List<ProdutoTipo> produtoTipos;
 
 	public ProdutoTipo getProdutoTipo() {
 		return produtoTipo;
 	}
+	
+	@PostConstruct
+	public void postContruct() {
+		atualizarLista();
+	}
 
 	public void setProdutoTipo(ProdutoTipo produtoTipo) {
 		this.produtoTipo = produtoTipo;
+	}
+	
+	public List<ProdutoTipo> getProdutoTipos() {
+		return produtoTipos;
+	}
+
+	public void setProdutoTipos(List<ProdutoTipo> produtoTipos) {
+		this.produtoTipos = produtoTipos;
 	}
 	
 	public void salvar() {
@@ -32,22 +47,47 @@ public class ProdutoTipoCadastroBean {
 		  
         session.beginTransaction();
  
-        session.save(produtoTipo);
+        if (produtoTipo.getId() == null) {
+        	session.save(produtoTipo);
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto cadastrado com sucesso!", ""));
+        } else {
+        	session.update(produtoTipo);
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto editado com sucesso!", ""));
+        }
  
         session.getTransaction().commit();
         
         produtoTipo = new ProdutoTipo();
         
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto cadastrado com sucesso!", ""));
- 
+        atualizarLista();
         
-/*        Query q = session.createQuery("From ProdutoTipo ");
-                 
-        List<ProdutoTipo> resultList = q.list();
-        System.out.println("Quantidade de Tipos:" + resultList.size());
-        for (ProdutoTipo next : resultList) {
-            System.out.println("Tipo: " + next.getNome());
-        }*/
+        
+ 
+	}
+	
+	public void editar(int row) {
+		produtoTipo = produtoTipos.get(row);
+	}
+	
+	public void excluir(int row) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+        
+		produtoTipo = produtoTipos.get(row);
+		
+		session.delete(produtoTipo);
+		
+		session.getTransaction().commit();
+		
+		atualizarLista();
+	}
+	
+	public void atualizarLista() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Query q = session.createQuery("From ProdutoTipo ");
+        
+		produtoTipos = q.list();
 	}
 	
 }
