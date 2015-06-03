@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" >
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="/AtendimentoWeb/faces/style/principal.css" />
+	</h:head>
+
+	<body>
+		<ui:include src="../../menu.xhtml" />
+		<div id="conteudo">
+			<h:form prependId="false">
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				<h:outputText value="Nome :" />
+				<br/>
+				<p:inputText id="nome" value="#{produtoCadastroBean.produto.nome}" />
+				<br/>
+				<h:outputText value="Tipo :" />
+				<br/>
+				<p:selectOneMenu id="tipo" value="#{produtoCadastroBean.produto.produtoTipo.id}">
+					<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
+				</p:selectOneMenu>
+				<br/>
+				<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Cadastrar Produto"/>
+			</h:form>
+		</div>
+	</body>
+	
+</html>

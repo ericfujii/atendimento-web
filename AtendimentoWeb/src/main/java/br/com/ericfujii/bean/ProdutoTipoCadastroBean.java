@@ -1,13 +1,10 @@
 package br.com.ericfujii.bean;
 
-import java.util.List;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.com.ericfujii.entidade.ProdutoTipo;
