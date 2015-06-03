@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" >
+	
+	<ui:composition>
+		<h:form id="menu">
+			<p:menubar>
+		        <p:submenu label="Cadastro" icon="ui-icon-plus">
+		            <p:menuitem value="Usuário" action="#" icon="ui-icon-person" />
+		            <p:separator />
+		            <p:menuitem value="Produto" url="#" icon="ui-icon-tag" />
+		            <p:separator />
+		            <p:menuitem value="Tipo de Produto" url="pages/cadastro/ProdutoTipoCadastro.xhtml" icon="ui-icon-tag" />
+		            <p:separator />
+		            <p:menuitem value="Pedido" url="#" icon="ui-icon-cart" />
+		        </p:submenu>
+		        
+		        <p:submenu label="Listagens" icon="ui-icon-note">
+		            <p:menuitem value="Usuário" action="pages/cadastro/ProdutoTipoCadastro.xhtml" icon="ui-icon-person" />
+		            <p:separator />
+		            <p:menuitem value="Produto" url="#" icon="ui-icon-tag" />
+		            <p:separator />
+		            <p:menuitem value="Tipo de Produto" url="#" icon="ui-icon-tag" />
+		        </p:submenu>
+		 
+		        <p:submenu label="Pedidos" icon="ui-icon-cart">
+		            <p:menuitem value="Comida" url="#" />
+		            <p:separator />
+		            <p:menuitem value="Bebida" url="#" />
+		        </p:submenu>
+		 
+		        <p:submenu label="Chat" icon="ui-icon-comment" >
+		            <p:menuitem value="Todos" url="#" icon="ui-icon-signal-diag" />
+		            <p:separator />
+		            <p:menuitem value="Usuário" url="#" icon="ui-icon-person" />
+		        </p:submenu>
+		    </p:menubar>
+		</h:form>
+	</ui:composition>
+</html>
