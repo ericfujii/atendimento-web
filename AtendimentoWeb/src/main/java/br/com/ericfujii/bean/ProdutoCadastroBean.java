@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Session;
@@ -15,7 +15,7 @@ import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
-@RequestScoped
+@ViewScoped
 @ManagedBean
 public class ProdutoCadastroBean {
 
