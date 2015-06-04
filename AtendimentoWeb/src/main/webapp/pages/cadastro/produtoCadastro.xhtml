@@ -54,8 +54,23 @@
 					    </p:column>
 					    
 					    <p:column headerText="Opções">
-					        <p:commandLink action="#{produtoCadastroBean.editar(produto)}" update="camposEntradaPG, tabelaProdutos" value="Editar" style="margin-right: 10px;"/>
-					        <p:commandLink action="#{produtoCadastroBean.excluir(produto)}" update="camposEntradaPG, tabelaProdutos" value="Inativar" />
+					        <p:commandLink 
+					        	action="#{produtoCadastroBean.editar(produto)}" 
+					        	update="camposEntradaPG, tabelaProdutos" 
+					        	value="Editar" 
+					        	style="margin-right: 10px;"/>
+					        	
+					        <p:commandLink 
+					        	action="#{produtoCadastroBean.inativar(produto)}" 
+					        	update="camposEntradaPG, tabelaProdutos" 
+					        	value="Inativar"	
+					        	rendered="#{produto.situacao eq 'ATIVO'}"/>
+					        	
+					        <p:commandLink 
+					        	action="#{produtoCadastroBean.reativar(produto)}" 
+					        	update="camposEntradaPG, tabelaProdutos" 
+					        	value="Reativar"	
+					        	rendered="#{produto.situacao eq 'INATIVO'}"/>
 					    </p:column>
 					</p:dataTable>
 	    		</p:fieldset>
