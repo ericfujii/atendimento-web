@@ -15,7 +15,17 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				
+				<h:panelGrid columns="2" style="margin-bottom:10px">
+			        <p:outputLabel for="tipoPedido" value="Tipo Pedido:" />
+			        <p:selectOneRadio id="tipoPedido" value="#{pedidoCadastroBean.tipoPedido}">
+			            <f:selectItems value="#{pedidoCadastroBean.tiposPedido}" />
+			            <f:ajax render="labelCliente" event="change" execute="@this" listener="#{pedidoCadastroBean.alterarTipo}" />
+			        </p:selectOneRadio>
+			    </h:panelGrid>
+			    <h:panelGrid columns="2" style="margin-bottom:10px">
+			    	<h:outputText id="labelCliente" for="cliente" value="#{pedidoCadastroBean.labelCliente}" />
+					<p:inputText id="cliente" value="#{pedidoCadastroBean.pedido.cliente}" />
+			    </h:panelGrid>
 				<p:outputLabel for="produto" value="Produto: " />
 		        <p:selectOneMenu id="produto" value="#{pedidoCadastroBean.idProduto}">
 		            <f:selectItem itemLabel="Selecione Um Produto" itemValue="" />
