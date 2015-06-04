@@ -1,6 +1,8 @@
 package br.com.ericfujii.entidade;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +23,9 @@ public class Produto {
 	@JoinColumn(name = "_produto_tipo")
 	private ProdutoTipo produtoTipo;
 	
+	@Enumerated(EnumType.STRING)
+	private ESituacao situacao;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -38,6 +43,12 @@ public class Produto {
 	}
 	public void setProdutoTipo(ProdutoTipo produtoTipo) {
 		this.produtoTipo = produtoTipo;
+	}
+	public ESituacao getSituacao() {
+		return situacao;
+	}
+	public void setSituacao(ESituacao situacao) {
+		this.situacao = situacao;
 	}
 	
 	

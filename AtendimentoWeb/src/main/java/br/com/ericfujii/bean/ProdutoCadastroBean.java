@@ -21,13 +21,20 @@ public class ProdutoCadastroBean {
 
 	private Produto produto;
 	private List<ProdutoTipo> produtosTipos;
+	private List<Produto> produtos;
 	
 	@PostConstruct
 	public void inicializar() {
 		construirProduto();
 		carregarProdutosTipos();
+		carregarProdutos();
 	}
 	
+	private void carregarProdutos() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		produtosTipos = (List<ProdutoTipo>) session.createQuery("FROM ProdutoTipo pt ORDER BY pt.nome ").list();
+	}
+
 	private void construirProduto() {
 		produto = new Produto();
 		produto.setProdutoTipo(new ProdutoTipo());
@@ -68,5 +75,13 @@ public class ProdutoCadastroBean {
 
 	public List<ProdutoTipo> getProdutosTipos() {
 		return produtosTipos;
+	}
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 }
