@@ -1,18 +1,14 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
 import org.hibernate.Session;
-
 import br.com.ericfujii.entidade.ESituacao;
-import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
@@ -26,7 +22,7 @@ public class UsuarioCadastroBean {
 	private StringBuilder selectUsuarios = new StringBuilder();
 	{
 		selectUsuarios.append("FROM Usuario u ");
-		selectUsuarios.append("ORDER BY u.nome ");
+		selectUsuarios.append("ORDER BY u.nome, u.id ");
 	}
 	
 	@PostConstruct
@@ -35,7 +31,7 @@ public class UsuarioCadastroBean {
 		carregarUsuarios();
 	}
 	
-	private void construirUsuario() {
+	public void construirUsuario() {
 		this.usuario = new Usuario();
 	}
 	

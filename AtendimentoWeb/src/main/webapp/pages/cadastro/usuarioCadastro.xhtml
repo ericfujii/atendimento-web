@@ -16,8 +16,8 @@
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-				<p:fieldset legend="Cadastro" style="margin-bottom: 10px;">
-					<h:panelGroup id="camposEntradaPG">
+				<h:panelGroup id="camposEntradaPG">
+					<p:fieldset legend="#{(empty usuarioCadastroBean.usuario.id) ? 'Cadastro' : 'Edição'} de Usuário" style="margin-bottom: 10px;">
 						<h:panelGroup rendered="#{not empty usuarioCadastroBean.usuario.id}">
 							<h:panelGrid columns="2" style="margin-bottom:10px">
 								<h:outputText for="id" value="Id:" />
@@ -42,13 +42,26 @@
 						
 						<h:panelGrid columns="2" style="margin-bottom:10px">
 							<h:outputText for="confirmacaoSenha" value="Confirme a Senha:" />
-							<p:password id="confirmacaoSenha" value="#{usuarioCadastroBean.usuario.confirmacaoSenha}" />
+							<p:password id="confirmacaoSenha" value="#{usuarioCadastroBean.usuario.confirmacaoSenha}"/>
 						</h:panelGrid>
 						
-					</h:panelGroup>
-					<p:commandButton styleClass="button" id="commit" actionListener="#{usuarioCadastroBean.salvar}" ajax="false" value="Salvar"/>
-				</p:fieldset>
-				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+							<p:commandButton styleClass="button" 
+											 id="salvarBTN" 
+											 actionListener="#{usuarioCadastroBean.salvar}" 
+											 ajax="false" 
+											 value="Salvar"/>
+											 
+							<p:commandButton styleClass="button" 
+											 id="cancelarBTN" 
+											 actionListener="#{usuarioCadastroBean.construirUsuario()}" 
+											 ajax="false" 
+											 value="Cancelar"/>
+						 </h:panelGrid>
+					</p:fieldset>
+				</h:panelGroup>
+				
+				<p:fieldset legend="Listagem de Usuários" toggleable="true" toggleSpeed="500">
         			<p:dataTable id="tabelaUsuarios" 
 			        			 var="usuario" 
 			        			 value="#{usuarioCadastroBean.usuarios}" 
@@ -76,7 +89,8 @@
 					        	action="#{usuarioCadastroBean.editar(usuario)}" 
 					        	update="camposEntradaPG, tabelaUsuarios" 
 					        	value="Editar" 
-					        	style="margin-right: 10px;"/>
+					        	style="margin-right: 10px;"
+					        	disabled="#{usuario.situacao eq 'INATIVO'}"/>
 					        	
 					        <p:commandLink 
 					        	action="#{usuarioCadastroBean.inativar(usuario)}" 
