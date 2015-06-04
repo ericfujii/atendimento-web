@@ -15,8 +15,7 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				<h:outputText value="Nome :" />
-				<br/>
+				<h:outputText for="nome" value="Nome :" />
 				<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
 				<br/>
 				<p:commandButton styleClass="button" id="commit" update="tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="false" value="Salvar Tipo Produto"/>

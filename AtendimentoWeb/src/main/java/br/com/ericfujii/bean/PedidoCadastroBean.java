@@ -10,5 +10,15 @@ import br.com.ericfujii.entidade.Pedido;
 public class PedidoCadastroBean {
 
 	private Pedido pedido;
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+	
+	
 	
 }
