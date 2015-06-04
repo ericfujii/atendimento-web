@@ -53,6 +53,10 @@
 					        <h:outputText value="#{produto.produtoTipo.nome}" />
 					    </p:column>
 					    
+   					    <p:column headerText="Situação">
+					        <h:outputText value="#{produto.situacao}" />
+					    </p:column>
+					    
 					    <p:column headerText="Opções">
 					        <p:commandLink 
 					        	action="#{produtoCadastroBean.editar(produto)}" 

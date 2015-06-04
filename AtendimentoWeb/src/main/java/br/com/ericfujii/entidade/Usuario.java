@@ -1,10 +1,13 @@
 package br.com.ericfujii.entidade;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "usuario")
@@ -16,6 +19,12 @@ public class Usuario {
 	private String nome;
 	private String login;
 	private String senha;
+	
+	@Enumerated(EnumType.STRING)
+	private ESituacao situacao = ESituacao.ATIVO;
+	
+	@Transient
+	private String confirmacaoSenha;
 	
 	public Integer getId() {
 		return id;
@@ -41,5 +50,16 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
+	public String getConfirmacaoSenha() {
+		return confirmacaoSenha;
+	}
+	public void setConfirmacaoSenha(String confirmacaoSenha) {
+		this.confirmacaoSenha = confirmacaoSenha;
+	}
+	public ESituacao getSituacao() {
+		return situacao;
+	}
+	public void setSituacao(ESituacao situacao) {
+		this.situacao = situacao;
+	}
 }
