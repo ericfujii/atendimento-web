@@ -35,6 +35,7 @@ public class ProdutoCadastroBean {
 	private void carregarProdutos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE p.situacao = 'ATIVO' ORDER BY p.nome ").list();
+		session.close();
 	}
 
 	private void construirProduto() {
@@ -46,6 +47,7 @@ public class ProdutoCadastroBean {
 	private void carregarProdutosTipos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		produtosTipos = (List<ProdutoTipo>) session.createQuery("FROM ProdutoTipo pt WHERE pt.situacao = 'ATIVO' ORDER BY pt.nome").list();
+		session.close();
 	}
 	
 	public void salvar() {
@@ -71,7 +73,7 @@ public class ProdutoCadastroBean {
         	makeMessage(FacesMessage.SEVERITY_INFO, "Produto editado com sucesso!", "");
         }
         session.getTransaction().commit();
-        
+        session.close();
         construirProduto();
         carregarProdutos();
 	}
@@ -87,6 +89,7 @@ public class ProdutoCadastroBean {
         session.update(produtoSelecionado);
     	makeMessage(FacesMessage.SEVERITY_INFO, "Produto inativado com sucesso!", "");
     	session.getTransaction().commit();
+    	session.close();
     	carregarProdutos();
 	}
 	

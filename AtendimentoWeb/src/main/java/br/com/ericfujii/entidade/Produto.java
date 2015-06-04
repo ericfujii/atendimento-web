@@ -1,5 +1,8 @@
 package br.com.ericfujii.entidade;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +29,9 @@ public class Produto {
 	
 	@Enumerated(EnumType.STRING)
 	private ESituacao situacao = ESituacao.ATIVO;
+	
+	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+	private List<ItemPedido> itensPedidos;
 	
 	public Integer getId() {
 		return id;
@@ -50,6 +57,10 @@ public class Produto {
 	public void setSituacao(ESituacao situacao) {
 		this.situacao = situacao;
 	}
-	
-	
+	public List<ItemPedido> getItensPedidos() {
+		return itensPedidos;
+	}
+	public void setItensPedidos(List<ItemPedido> itensPedidos) {
+		this.itensPedidos = itensPedidos;
+	}
 }

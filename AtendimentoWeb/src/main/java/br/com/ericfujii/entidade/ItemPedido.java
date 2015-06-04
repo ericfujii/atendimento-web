@@ -29,9 +29,9 @@ public class ItemPedido {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "_pedido")
 	private Pedido pedido;
-	private Integer quantidadeMesa;
-	private Boolean viagem;
-	private Integer quantidadeViagem;
+	private Integer quantidadeMesa = 0;
+	private Boolean viagem = false;
+	private Integer quantidadeViagem = 0;
 	private String observacao;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao_pedido")
