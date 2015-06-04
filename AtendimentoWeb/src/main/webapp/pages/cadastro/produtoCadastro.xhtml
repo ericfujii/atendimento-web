@@ -15,29 +15,29 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				
-				<h:panelGroup id="camposEntradaPG">
-					<h:panelGroup rendered="#{not empty produtoCadastroBean.produto.id}">
+				<p:fieldset legend="Cadastro" style="margin-bottom: 10px;">
+					<h:panelGroup id="camposEntradaPG">
+						<h:panelGroup rendered="#{not empty produtoCadastroBean.produto.id}">
+							<h:panelGrid columns="2" style="margin-bottom:10px">
+								<h:outputText for="id" value="Id:" />
+								<p:inputText id="id" value="#{produtoCadastroBean.produto.id}" disabled="true"/>
+							</h:panelGrid>
+						</h:panelGroup>
+						
 						<h:panelGrid columns="2" style="margin-bottom:10px">
-							<h:outputText for="id" value="Id:" />
-							<p:inputText id="id" value="#{produtoCadastroBean.produto.id}" disabled="true"/>
+							<h:outputText for="nome" value="Nome :" />
+							<p:inputText id="nome" value="#{produtoCadastroBean.produto.nome}" />
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+							<h:outputText for="tipo" value="Tipo:" />
+							<p:selectOneMenu id="tipo" value="#{produtoCadastroBean.produto.produtoTipo.id}">
+								<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
+							</p:selectOneMenu>
 						</h:panelGrid>
 					</h:panelGroup>
-					
-					<h:panelGrid columns="2" style="margin-bottom:10px">
-						<h:outputText for="nome" value="Nome :" />
-						<p:inputText id="nome" value="#{produtoCadastroBean.produto.nome}" />
-					</h:panelGrid>
-					
-					<h:panelGrid columns="2" style="margin-bottom:10px">
-						<h:outputText for="tipo" value="Tipo:" />
-						<p:selectOneMenu id="tipo" value="#{produtoCadastroBean.produto.produtoTipo.id}">
-							<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
-						</p:selectOneMenu>
-					</h:panelGrid>
-				</h:panelGroup>
-				<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Salvar"/>
-				
+					<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Salvar"/>
+				</p:fieldset>
 				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
         			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i">
 					    <p:column headerText="Id">

@@ -15,13 +15,15 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				<h:panelGrid columns="2" style="margin-bottom:10px">
-					<h:outputText for="nome" value="Nome :" />
-					<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
-				</h:panelGrid>
+				<p:fieldset legend="Cadastro"  style="margin-bottom: 10px;">
 					<h:panelGrid columns="2" style="margin-bottom:10px">
-					<p:commandButton styleClass="button" id="commit" update="tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="false" value="Salvar Tipo Produto"/>
-				</h:panelGrid>
+						<h:outputText for="nome" value="Nome :" />
+						<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
+					</h:panelGrid>
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+						<p:commandButton styleClass="button" id="commit" update="tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="false" value="Salvar Tipo Produto"/>
+					</h:panelGrid>
+				</p:fieldset>
 				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
         			<p:dataTable id="tabelaTipos" var="tipo" value="#{produtoTipoCadastroBean.produtoTipos}" rowIndexVar="i">
 					    <p:column headerText="Id">
