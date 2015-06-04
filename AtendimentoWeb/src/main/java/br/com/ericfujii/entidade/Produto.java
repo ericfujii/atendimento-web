@@ -24,7 +24,7 @@ public class Produto {
 	private ProdutoTipo produtoTipo;
 	
 	@Enumerated(EnumType.STRING)
-	private ESituacao situacao;
+	private ESituacao situacao = ESituacao.ATIVO;
 	
 	public Integer getId() {
 		return id;

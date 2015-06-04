@@ -31,11 +31,15 @@
 	        		<p:tab title="Listagem">
 	        			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i">
 						    <p:column headerText="Id">
-						        <h:outputText value="#{tipo.id}" />
+						        <h:outputText value="#{produto.id}" />
 						    </p:column>
 						 
 						    <p:column headerText="Nome">
-						        <h:outputText value="#{tipo.nome}" />
+						        <h:outputText value="#{produto.nome}" />
+						    </p:column>
+						    
+						    <p:column headerText="Tipo">
+						        <h:outputText value="#{produto.produtoTipo.nome}" />
 						    </p:column>
 						    
 						    <p:column headerText="Opções">

@@ -30,9 +30,10 @@ public class ProdutoCadastroBean {
 		carregarProdutos();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void carregarProdutos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtosTipos = (List<ProdutoTipo>) session.createQuery("FROM ProdutoTipo pt ORDER BY pt.nome ").list();
+		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE p.situacao = 'ATIVO' ORDER BY p.nome ").list();
 	}
 
 	private void construirProduto() {
