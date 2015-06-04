@@ -26,14 +26,14 @@ public class ProdutoCadastroBean {
 		selectProdutos.append("FROM Produto p ");
 		selectProdutos.append("JOIN FETCH p.produtoTipo pt ");
 		//selectProdutos.append("WHERE p.situacao = 'ATIVO' ");
-		selectProdutos.append("ORDER BY p.nome ");
+		selectProdutos.append("ORDER BY p.nome, p.id ");
 	}
 	
 	private StringBuilder selectprodutosTipos = new StringBuilder();
 	{
 		selectprodutosTipos.append("FROM ProdutoTipo pt ");
 		selectprodutosTipos.append("WHERE pt.situacao = 'ATIVO' ");
-		selectprodutosTipos.append("ORDER BY pt.nome ");
+		selectprodutosTipos.append("ORDER BY pt.nome, pt.id ");
 	}
 	 
 	
@@ -53,7 +53,7 @@ public class ProdutoCadastroBean {
 		session.close();
 	}
 
-	private void construirProduto() {
+	public void construirProduto() {
 		produto = new Produto();
 		produto.setProdutoTipo(new ProdutoTipo());
 	}

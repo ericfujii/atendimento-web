@@ -15,9 +15,9 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-
-				<p:fieldset legend="Cadastro" style="margin-bottom: 10px;">
-					<h:panelGroup id="camposEntradaPG">
+				
+				<h:panelGroup id="camposEntradaPG">
+					<p:fieldset legend="#{(empty produtoCadastroBean.produto.id) ? 'Cadastro' : 'Edição'} de Produto" style="margin-bottom: 10px;">
 						<h:panelGroup rendered="#{not empty produtoCadastroBean.produto.id}">
 							<h:panelGrid columns="2" style="margin-bottom:10px">
 								<h:outputText for="id" value="Id:" />
@@ -36,10 +36,23 @@
 								<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
 							</p:selectOneMenu>
 						</h:panelGrid>
-					</h:panelGroup>
-					<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Salvar"/>
-				</p:fieldset>
-				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
+						
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+							<p:commandButton styleClass="button" 
+											 id="salvarBTN" 
+											 actionListener="#{produtoCadastroBean.salvar}" 
+											 ajax="false" 
+											 value="Salvar"/>
+											 
+						   <p:commandButton styleClass="button" 
+											 id="cancelarBTN" 
+											 actionListener="#{produtoCadastroBean.construirProduto()}" 
+											 ajax="false" 
+											 value="Cancelar"/>
+					 	</h:panelGrid>
+					</p:fieldset>
+				</h:panelGroup>
+				<p:fieldset legend="Listagem de Produtos" toggleable="true" toggleSpeed="500">
         			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i" emptyMessage="Nenhum produto cadastrado">
 					    <p:column headerText="Id">
 					        <h:outputText value="#{produto.id}" />
@@ -62,7 +75,8 @@
 					        	action="#{produtoCadastroBean.editar(produto)}" 
 					        	update="camposEntradaPG, tabelaProdutos" 
 					        	value="Editar" 
-					        	style="margin-right: 10px;"/>
+					        	style="margin-right: 10px;"
+					        	disabled="#{produto.situacao eq 'INATIVO'}"/>
 					        	
 					        <p:commandLink 
 					        	action="#{produtoCadastroBean.inativar(produto)}" 
