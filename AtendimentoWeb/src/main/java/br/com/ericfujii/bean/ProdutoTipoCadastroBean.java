@@ -59,10 +59,9 @@ public class ProdutoTipoCadastroBean {
         
         produtoTipo = new ProdutoTipo();
         
+        session.close();
+        
         atualizarLista();
-        
-        
- 
 	}
 	
 	public void editar(int row) {
@@ -80,6 +79,8 @@ public class ProdutoTipoCadastroBean {
 		
 		session.getTransaction().commit();
 		
+		session.close();
+		
 		atualizarLista();
 	}
 	
@@ -88,6 +89,7 @@ public class ProdutoTipoCadastroBean {
 		Query q = session.createQuery("From ProdutoTipo ");
         
 		produtoTipos = q.list();
+		session.close();
 	}
 	
 }

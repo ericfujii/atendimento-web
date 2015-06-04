@@ -15,17 +15,23 @@
 		<div id="conteudo">
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				<p:fieldset legend="Cadastro"  style="margin-bottom: 10px;">
-					<h:panelGrid columns="2" style="margin-bottom:10px">
-						<h:outputText for="nome" value="Nome :" />
-						<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
-					</h:panelGrid>
+				<h:panelGroup id="camposCadastro">
+					<p:fieldset legend="Cadastro"  style="margin-bottom: 10px;">
 						<h:panelGrid columns="2" style="margin-bottom:10px">
-						<p:commandButton styleClass="button" id="commit" update="tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="false" value="Salvar Tipo Produto"/>
-					</h:panelGrid>
-				</p:fieldset>
+							<h:outputText for="nome" value="Nome :" />
+							<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+			    			<p:outputLabel for="bebida" value="Bebida? " />
+			        		<p:selectBooleanCheckbox id="bebida" value="#{produtoTipoCadastroBean.produtoTipo.bebida}" />
+		        		</h:panelGrid>
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+							<p:commandButton styleClass="button" id="commit" update="camposCadastro tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="true" value="Salvar Tipo Produto"/>
+						</h:panelGrid>
+					</p:fieldset>
+				</h:panelGroup>
 				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
-        			<p:dataTable id="tabelaTipos" var="tipo" value="#{produtoTipoCadastroBean.produtoTipos}" rowIndexVar="i">
+        			<p:dataTable id="tabelaTipos" var="tipo" value="#{produtoTipoCadastroBean.produtoTipos}" rowIndexVar="i" emptyMessage="Nenhum tipo cadastrado">
 					    <p:column headerText="Id">
 					        <h:outputText value="#{tipo.id}" />
 					    </p:column>
@@ -34,8 +40,12 @@
 					        <h:outputText value="#{tipo.nome}" />
 					    </p:column>
 					    
+					    <p:column headerText="Bebida">
+					        <h:outputText value="#{tipo.bebida ? 'SIM' : 'NÃO' }" />
+					    </p:column>
+					    
 					    <p:column headerText="Opções">
-					        <p:commandLink action="#{produtoTipoCadastroBean.editar(i)}" update="nome" value="Editar" style="margin-right: 10px;"/>
+					        <p:commandLink action="#{produtoTipoCadastroBean.editar(i)}" update="camposCadastro" value="Editar" style="margin-right: 10px;"/>
 					        <p:commandLink action="#{produtoTipoCadastroBean.excluir(i)}" update="tabelaTipos" value="Excluir" />
 					    </p:column>
 					</p:dataTable>

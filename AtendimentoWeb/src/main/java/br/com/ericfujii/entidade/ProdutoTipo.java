@@ -2,13 +2,10 @@ package br.com.ericfujii.entidade;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +20,7 @@ public class ProdutoTipo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Boolean bebida;
 	
 	@Enumerated(EnumType.STRING)
 	private ESituacao situacao = ESituacao.ATIVO;
@@ -53,5 +51,11 @@ public class ProdutoTipo {
 	}
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
+	}
+	public Boolean getBebida() {
+		return bebida;
+	}
+	public void setBebida(Boolean bebida) {
+		this.bebida = bebida;
 	}
 }

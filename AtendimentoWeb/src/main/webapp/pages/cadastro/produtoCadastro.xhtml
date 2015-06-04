@@ -39,7 +39,7 @@
 					<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Salvar"/>
 				</p:fieldset>
 				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
-        			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i">
+        			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i" emptyMessage="Nenhum produto cadastrado">
 					    <p:column headerText="Id">
 					        <h:outputText value="#{produto.id}" />
 					    </p:column>
