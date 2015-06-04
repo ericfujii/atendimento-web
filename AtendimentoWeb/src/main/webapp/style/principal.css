@@ -8,3 +8,28 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+.divPai {
+	width: 100%;
+	display:inline-flex;
+}
+
+.divFilha {
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+	float: left;
+	margin: 5px;
+}
+
+.botao_chat{
+	float: right;
+	width: 30px;
+	height: 50px;
+}
+
+.mensagem_chat{
+	float: left;
+	width: 30px;
+	height: 50%;
+}

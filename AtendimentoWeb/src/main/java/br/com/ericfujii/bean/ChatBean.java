@@ -28,11 +28,12 @@ public class ChatBean {
 	private List<SelectItem> destinatariosDisponiveis;
 
 	private Mensagem mensagem;
+	private List<Mensagem> mensagens;
 
 	private void makeMessage(Severity severity, String message, String title) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, title));
 	}
-	
+
 	@PostConstruct
 	public void postConstruct(){
 		//Preenche lista de destinatarios
@@ -48,11 +49,11 @@ public class ChatBean {
 		//Pega o usuario balcao
 		q = session.createQuery("FROM Usuario u WHERE u.id = 1");
 		usuarioBalcao = (Usuario) q.uniqueResult();
-		
+
 		//Instancia nova mensagem
 		mensagem = new Mensagem();
 	}
-	
+
 	public boolean validaMensagem(){
 		boolean retorno = true;
 		if(mensagem.getDataMensagem() == null || mensagem.getMensagem().isEmpty()){
@@ -65,16 +66,16 @@ public class ChatBean {
 		}
 		return retorno;
 	}
-	
+
 	public void enviaMensagem(){
 		try{
 			if(validaMensagem()){
-			mensagem.setDataMensagem(new Date(System.currentTimeMillis()));
-			mensagem.setRemetente(usuarioBalcao);
-			Session session = HibernateUtil.getSessionFactory().openSession();
-	        session.beginTransaction();
-	        session.persist(mensagem);
-	        session.getTransaction().commit();
+				mensagem.setDataMensagem(new Date(System.currentTimeMillis()));
+				mensagem.setRemetente(usuarioBalcao);
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				session.beginTransaction();
+				session.persist(mensagem);
+				session.getTransaction().commit();
 			}
 		}catch(Exception ex){
 			makeMessage(FacesMessage.SEVERITY_ERROR, "Erro ao enviar mensagem!", "");
@@ -82,6 +83,41 @@ public class ChatBean {
 			this.mensagem = new Mensagem();
 		}
 	}
+	/* ***************** Getters & Setters *************************/
 
+	public Usuario getUsuarioBalcao() {
+		return usuarioBalcao;
+	}
 
+	public void setUsuarioBalcao(Usuario usuarioBalcao) {
+		this.usuarioBalcao = usuarioBalcao;
+	}
+
+	public List<SelectItem> getDestinatariosDisponiveis() {
+		return destinatariosDisponiveis;
+	}
+
+	public void setDestinatariosDisponiveis(
+			List<SelectItem> destinatariosDisponiveis) {
+		this.destinatariosDisponiveis = destinatariosDisponiveis;
+	}
+
+	public Mensagem getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(Mensagem mensagem) {
+		this.mensagem = mensagem;
+	}
+
+	public List<Mensagem> getMensagens() {
+		return mensagens;
+	}
+
+	public void setMensagens(List<Mensagem> mensagens) {
+		this.mensagens = mensagens;
+	}
+	
+	
+	
 }
