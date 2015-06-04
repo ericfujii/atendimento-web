@@ -21,3 +21,15 @@
 	float: left;
 	margin: 5px;
 }
+
+.botao_chat{
+	float: right;
+	width: 30px;
+	height: 50px;
+}
+
+.mensagem_chat{
+	float: left;
+	width: 30px;
+	height: 50%;
+}
