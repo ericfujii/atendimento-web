@@ -19,13 +19,21 @@
 					<p:fieldset legend="#{comida.nome}" styleClass="divFilha">
 						<p:dataTable var="item" value="#{comida.itensPedidos}" emptyMessage="Sem pedidos">
 						    <p:column headerText="Cli.">
-						        <h:outputText value="#{item.pedido.cliente}" />
+							    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('#{item.observacao}')">
+							         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.pedido.cliente}" title="#{item.pedido.cliente}" />
+						        </div>
 						    </p:column>
-						    <p:column headerText="Local">
+						    <p:column width="25px;" headerText="Loc.">
 						        <h:outputText value="#{item.quantidadeMesa}" />
 						    </p:column>
-						    <p:column headerText="Via.">
+						    <p:column width="25px;" headerText="Via.">
 						        <h:outputText value="#{item.quantidadeViagem}" />
+						    </p:column>
+						    <p:column headerText="Status">
+						        <p:selectOneMenu id="produto" value="#{item.situacaoPedido}">
+						            <f:selectItems value="#{comidaListagemBean.situacoes}" />
+						            <f:ajax event="change" execute="@this" render="@form" listener="#{comidaListagemBean.atualizarItem(comida.id, item.id)}" />
+						        </p:selectOneMenu>
 						    </p:column>
 						</p:dataTable>
 					</p:fieldset>
@@ -33,5 +41,4 @@
 			</div>
    		</h:form>
 	</body>
-	
 </html>

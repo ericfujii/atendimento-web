@@ -15,9 +15,9 @@
 }
 
 .divFilha {
-	width: 200px;
-	min-width: 200px;
-	max-width: 200px;
+	width: 300px;
+	min-width: 300px;
+	max-width: 300px;
 	float: left;
 	margin: 5px;
 }
