@@ -1,6 +1,11 @@
 package br.com.ericfujii.entidade;
 
+import java.util.Calendar;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="item_pedido")
@@ -26,6 +33,12 @@ public class ItemPedido {
 	private Boolean viagem;
 	private Integer quantidadeViagem;
 	private String observacao;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "situacao_pedido")
+	private ESituacaoPedido situacaoPedido;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_hora_ultima_situacao")
+	private Calendar dataHotaUltimaSituacao;
 	
 	public Integer getId() {
 		return id;
@@ -69,5 +82,16 @@ public class ItemPedido {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	
+	public ESituacaoPedido getSituacaoPedido() {
+		return situacaoPedido;
+	}
+	public void setSituacaoPedido(ESituacaoPedido situacaoPedido) {
+		this.situacaoPedido = situacaoPedido;
+	}
+	public Calendar getDataHotaUltimaSituacao() {
+		return dataHotaUltimaSituacao;
+	}
+	public void setDataHotaUltimaSituacao(Calendar dataHotaUltimaSituacao) {
+		this.dataHotaUltimaSituacao = dataHotaUltimaSituacao;
+	}
 }
