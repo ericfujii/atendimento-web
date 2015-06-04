@@ -60,9 +60,6 @@ public class ProdutoTipoCadastroBean {
         produtoTipo = new ProdutoTipo();
         
         atualizarLista();
-        
-        
- 
 	}
 	
 	public void editar(int row) {

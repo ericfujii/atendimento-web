@@ -17,17 +17,17 @@
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 				
 				<h:panelGroup id="camposEntradaPG">
-					<h:panelGroup rendered="#{not empty usuarioCadastroBean.usuario.id}">
+					<h:panelGroup rendered="#{not empty produtoCadastroBean.produto.id}">
 						<h:outputText for="id" value="Id:" />
-						<p:inputText id="id" value="#{usuarioCadastroBean.usuario.id}" disabled="true"/>
+						<p:inputText id="id" value="#{produtoCadastroBean.produto.id}" disabled="true"/>
 						<br/>
 					</h:panelGroup>
 					
 					<h:outputText for="nome" value="Nome :" />
-					<p:inputText id="nome" value="#{usuarioCadastroBean.usuario.nome}" />
+					<p:inputText id="nome" value="#{produtoCadastroBean.produto.nome}" />
 					<br/>
 					<h:outputText for="tipo" value="Tipo:" />
-					<p:selectOneMenu id="tipo" value="#{usuarioCadastroBean.usuario.produtoTipo.id}">
+					<p:selectOneMenu id="tipo" value="#{produtoCadastroBean.produto.produtoTipo.id}">
 						<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
 					</p:selectOneMenu>
 					<br/>
@@ -50,8 +50,8 @@
 						    </p:column>
 						    
 						    <p:column headerText="Opções">
-						        <p:commandLink action="#{usuarioCadastroBean.editar(usuario)}" update="camposEntradaPG, tabelausuarios" value="Editar" style="margin-right: 10px;"/>
-						        <p:commandLink action="#{usuarioCadastroBean.excluir(usuario)}" update="camposEntradaPG, tabelausuarios" value="Inativar" />
+						        <p:commandLink action="#{produtoCadastroBean.editar(produto)}" update="camposEntradaPG, tabelaProdutos" value="Editar" style="margin-right: 10px;"/>
+						        <p:commandLink action="#{produtoCadastroBean.excluir(produto)}" update="camposEntradaPG, tabelaProdutos" value="Inativar" />
 						    </p:column>
 						</p:dataTable>
 	        		</p:tab>
