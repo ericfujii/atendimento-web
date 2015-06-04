@@ -23,14 +23,37 @@
 			        </p:selectOneRadio>
 			    </h:panelGrid>
 			    <h:panelGrid columns="2" style="margin-bottom:10px">
-			    	<h:outputText id="labelCliente" for="cliente" value="#{pedidoCadastroBean.labelCliente}" />
+			    	<p:outputLabel id="labelCliente" for="cliente" value="#{pedidoCadastroBean.labelCliente}" />
 					<p:inputText id="cliente" value="#{pedidoCadastroBean.pedido.cliente}" />
 			    </h:panelGrid>
-				<p:outputLabel for="produto" value="Produto: " />
-		        <p:selectOneMenu id="produto" value="#{pedidoCadastroBean.idProduto}">
-		            <f:selectItem itemLabel="Selecione Um Produto" itemValue="" />
-		            <f:selectItems value="#{pedidoCadastroBean.produtos}" />
-		        </p:selectOneMenu>
+			    <h3 style="margin-top:0">Item Pedido</h3>
+			    <h:panelGrid columns="2" style="margin-bottom:10px">
+					<p:outputLabel for="produto" value="Produto: " />
+			        <p:selectOneMenu id="produto" value="#{pedidoCadastroBean.idProduto}">
+			            <f:selectItem itemLabel="Selecione Um Produto" itemValue="" />
+			            <f:selectItems value="#{pedidoCadastroBean.produtos}" />
+			        </p:selectOneMenu>
+		        </h:panelGrid>
+		        <h:panelGrid columns="2" style="margin-bottom:10px">
+			        <p:outputLabel for="quantidadeMesa" value="Quant. Local: " />
+	        		<p:spinner id="quantidadeMesa" value="#{pedidoCadastroBean.itemPedido.quantidadeMesa}" min="0" max="100" />
+    			</h:panelGrid>
+    			<h:panelGrid columns="2" style="margin-bottom:10px">
+	    			<p:outputLabel for="viagem" value="Viagem? " />
+	        		<p:selectBooleanCheckbox id="viagem" value="#{pedidoCadastroBean.itemPedido.viagem}" >
+	        			<f:ajax execute="@this" render="viagemPG" event="change" />
+	        		</p:selectBooleanCheckbox>
+        		</h:panelGrid>
+        		<h:panelGrid id="viagemPG">
+	        		<h:panelGrid columns="2" style="margin-bottom:10px" rendered="#{pedidoCadastroBean.itemPedido.viagem}">
+				        <p:outputLabel for="quantidadeViagem" value="Quant. Viagem: " />
+		        		<p:spinner id="quantidadeViagem" value="#{pedidoCadastroBean.itemPedido.quantidadeViagem}" min="0" max="100" />
+	    			</h:panelGrid>
+    			</h:panelGrid>
+    			<h:panelGrid columns="2" style="margin-bottom:10px">
+			    	<p:outputLabel for="observacao" value="Observação" />
+					<p:inputText id="observacao" value="#{pedidoCadastroBean.itemPedido.observacao}" />
+			    </h:panelGrid>
     		</h:form>
 		</div>
 	</body>
