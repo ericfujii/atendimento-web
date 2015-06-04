@@ -1,5 +1,8 @@
 package br.com.ericfujii.entidade;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +30,9 @@ public class Pedido {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "_usuario")
 	private Usuario usuario;
+	
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ItemPedido> pedidos;
 	
 	public Integer getId() {
 		return id;
@@ -50,6 +57,12 @@ public class Pedido {
 	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	public List<ItemPedido> getPedidos() {
+		return pedidos;
+	}
+	public void setPedidos(List<ItemPedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 }
