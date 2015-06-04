@@ -23,7 +23,6 @@ public class ComidaListagemBean {
 	public void postConstruct() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE pt.bebida = false ORDER BY p.nome ").list();
-		session.close();
 	}
 
 	public List<Produto> getProdutos() {
