@@ -19,13 +19,32 @@
 				<br/>
 				<p:inputText id="nome" value="#{produtoCadastroBean.produto.nome}" />
 				<br/>
-				<h:outputText value="Tipo :" />
+				<h:outputText value="Tipo:" />
 				<br/>
 				<p:selectOneMenu id="tipo" value="#{produtoCadastroBean.produto.produtoTipo.id}">
 					<f:selectItems value="#{produtoCadastroBean.produtosTipos}" var="produtoTipo" itemLabel="#{produtoTipo.nome}" itemValue="#{produtoTipo.id}"/>
 				</p:selectOneMenu>
 				<br/>
 				<p:commandButton styleClass="button" id="commit" actionListener="#{produtoCadastroBean.salvar}" ajax="false" value="Cadastrar Produto"/>
+				
+				<p:accordionPanel>
+	        		<p:tab title="Listagem">
+	        			<p:dataTable id="tabelaProdutos" var="produto" value="#{produtoCadastroBean.produtos}" rowIndexVar="i">
+						    <p:column headerText="Id">
+						        <h:outputText value="#{tipo.id}" />
+						    </p:column>
+						 
+						    <p:column headerText="Nome">
+						        <h:outputText value="#{tipo.nome}" />
+						    </p:column>
+						    
+						    <p:column headerText="Opções">
+						        <p:commandLink action="#{produtoCadastroBean.editar(i)}" update="nome, " value="Editar" style="margin-right: 10px;"/>
+						        <ui:remove><p:commandLink action="#{produtoCadastroBean.excluir(i)}" update="tabelaTipos" value="Excluir" /></ui:remove>
+						    </p:column>
+						</p:dataTable>
+	        		</p:tab>
+	    		</p:accordionPanel>
 			</h:form>
 		</div>
 	</body>
