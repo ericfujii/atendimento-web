@@ -1,11 +1,16 @@
 package br.com.ericfujii.entidade;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +24,9 @@ public class ProdutoTipo {
 	
 	@Enumerated(EnumType.STRING)
 	private ESituacao situacao = ESituacao.ATIVO;
+	
+	@OneToMany(mappedBy = "produtoTipo", fetch = FetchType.LAZY)
+	private List<Produto> produtos;
 	
 	public Integer getId() {
 		return id;
@@ -37,5 +45,11 @@ public class ProdutoTipo {
 	}
 	public void setSituacao(ESituacao situacao) {
 		this.situacao = situacao;
+	}
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 }
