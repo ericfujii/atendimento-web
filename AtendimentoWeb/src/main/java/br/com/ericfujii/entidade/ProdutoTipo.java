@@ -30,9 +30,6 @@ public class ProdutoTipo {
 	@OneToMany(mappedBy = "produtoTipo", fetch = FetchType.LAZY)
 	private List<Produto> produtos;
 	
-	@Enumerated(EnumType.STRING)
-	private ESituacao situacao = ESituacao.ATIVO;
-	
 	public Integer getId() {
 		return id;
 	}
@@ -56,11 +53,5 @@ public class ProdutoTipo {
 	}
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
-	}
-	public ESituacao getSituacao() {
-		return situacao;
-	}
-	public void setSituacao(ESituacao situacao) {
-		this.situacao = situacao;
 	}
 }
