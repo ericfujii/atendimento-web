@@ -1,13 +1,16 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 import org.hibernate.Session;
+
 import br.com.ericfujii.entidade.ESituacao;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
@@ -15,27 +18,11 @@ import br.com.ericfujii.hibernate.HibernateUtil;
 
 @ViewScoped
 @ManagedBean
-public class ProdutoCadastroBean {
+public class UsuarioCadastroBean {
 
-	private Produto 		  produto;
+	private Produto produto;
 	private List<ProdutoTipo> produtosTipos;
-	private List<Produto>     produtos;
-	
-	private StringBuilder selectProdutos = new StringBuilder();
-	{
-		selectProdutos.append("FROM Produto p ");
-		selectProdutos.append("JOIN FETCH p.produtoTipo pt ");
-		//selectProdutos.append("WHERE p.situacao = 'ATIVO' ");
-		selectProdutos.append("ORDER BY p.nome ");
-	}
-	
-	private StringBuilder selectprodutosTipos = new StringBuilder();
-	{
-		selectprodutosTipos.append("FROM ProdutoTipo pt ");
-		selectprodutosTipos.append("WHERE pt.situacao = 'ATIVO' ");
-		selectprodutosTipos.append("ORDER BY pt.nome ");
-	}
-	 
+	private List<Produto> produtos;
 	
 	@PostConstruct
 	public void inicializar() {
@@ -47,10 +34,7 @@ public class ProdutoCadastroBean {
 	@SuppressWarnings("unchecked")
 	private void carregarProdutos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtos = (List<Produto>) session
-				.createQuery(selectProdutos.toString())
-				.list();
-		session.close();
+		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE p.situacao = 'ATIVO' ORDER BY p.nome ").list();
 	}
 
 	private void construirProduto() {
@@ -61,13 +45,11 @@ public class ProdutoCadastroBean {
 	@SuppressWarnings("unchecked")
 	private void carregarProdutosTipos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtosTipos = (List<ProdutoTipo>) session
-				.createQuery(selectprodutosTipos.toString())
-				.list();
-		session.close();
+		produtosTipos = (List<ProdutoTipo>) session.createQuery("FROM ProdutoTipo pt WHERE pt.situacao = 'ATIVO' ORDER BY pt.nome").list();
 	}
 	
 	public void salvar() {
+		
 		if ((produto.getNome() == null) 
 				|| (produto.getNome().trim().isEmpty())) {
 			makeMessage(FacesMessage.SEVERITY_WARN, "Informe o nome!", "");
@@ -89,7 +71,7 @@ public class ProdutoCadastroBean {
         	makeMessage(FacesMessage.SEVERITY_INFO, "Produto editado com sucesso!", "");
         }
         session.getTransaction().commit();
-        session.close();
+        
         construirProduto();
         carregarProdutos();
 	}
@@ -98,36 +80,16 @@ public class ProdutoCadastroBean {
 		this.produto = produtoSelecionado;
 	}
 	
-	public void inativar(Produto produtoSelecionado) {
+	public void excluir(Produto produtoSelecionado) {
 		produtoSelecionado.setSituacao(ESituacao.INATIVO);
-		atualizar(produtoSelecionado, "Produto " 
-									  + produtoSelecionado.getId()
-									  + " - "
-									  + produtoSelecionado.getNome() 
-									  + " inativado com sucesso!");
-    	carregarProdutos();
-	}
-	
-	public void reativar(Produto produtoSelecionado) {
-		
-		produtoSelecionado.setSituacao(ESituacao.ATIVO);
-		atualizar(produtoSelecionado, "Produto " 
-									  + produtoSelecionado.getId()
-									  + " - "
-									  + produtoSelecionado.getNome() 
-									  + " reativado com sucesso!");
-    	carregarProdutos();
-	}
-	
-	private void atualizar(Produto produto, String message) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.update(produto);
-    	makeMessage(FacesMessage.SEVERITY_INFO, message, "");
+        session.update(produtoSelecionado);
+    	makeMessage(FacesMessage.SEVERITY_INFO, "Produto inativado com sucesso!", "");
     	session.getTransaction().commit();
-    	session.close();
+    	carregarProdutos();
 	}
-
+	
 	private void makeMessage(Severity severity, String message, String title) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, title));
 	}

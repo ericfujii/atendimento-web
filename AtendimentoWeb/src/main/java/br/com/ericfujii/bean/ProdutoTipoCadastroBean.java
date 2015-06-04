@@ -54,13 +54,9 @@ public class ProdutoTipoCadastroBean {
         	session.update(produtoTipo);
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto editado com sucesso!", ""));
         }
- 
         session.getTransaction().commit();
-        
         produtoTipo = new ProdutoTipo();
-        
         session.close();
-        
         atualizarLista();
 	}
 	
