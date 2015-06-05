@@ -73,19 +73,23 @@
 					        <h:outputText value="#{item.produto.nome}" />
 					    </p:column>
 					    
-					    <p:column headerText="Qauntidade Local">
+					    <p:column headerText="Quantidade Local" width="200px;">
 					        <h:outputText value="#{item.quantidadeMesa == 0 ? '-' : item.quantidadeMesa }" />
 					    </p:column>
 					    
-					    <p:column headerText="Viagem">
+					    <p:column headerText="Viagem" width="100px;">
 					        <h:outputText value="#{item.viagem ? 'SIM' : 'NÃO' }" />
 					    </p:column>
 					    
-					    <p:column headerText="Quantidade Viagem">
+					    <p:column headerText="Quantidade Viagem" width="200px;">
 					        <h:outputText value="#{item.quantidadeViagem == 0 ? '-' : item.quantidadeViagem }" />
 					    </p:column>
 					    
-					    <p:column headerText="Opções">
+					    <p:column headerText="Observação">
+					        <h:outputText value="#{item.observacao}" />
+					    </p:column>
+					    
+					    <p:column headerText="Opções" width="200px;">
 					        <p:commandLink actionListener="#{pedidoCadastroBean.editar(i)}" update="camposCadastro" value="Editar" style="margin-right: 10px;"/>
 					        <p:commandLink value="Excluir" >
 					        	<f:ajax event="click" listener="#{pedidoCadastroBean.excluir(i)}" render="tabelaProdutos" />

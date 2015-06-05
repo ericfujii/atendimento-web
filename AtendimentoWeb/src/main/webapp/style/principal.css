@@ -11,15 +11,18 @@
 
 .divPai {
 	width: 100%;
-	display:inline-flex;
 }
 
 .divFilha {
-	width: 300px;
-	min-width: 300px;
-	max-width: 300px;
+	width: 400px;
+	min-width: 400px;
+	max-width: 400px;
+	height: 400px;
+	min-height: 400px;
+	max-height: 400px;
 	float: left;
 	margin: 5px;
+	overflow: scroll;
 }
 
 .botao_chat{

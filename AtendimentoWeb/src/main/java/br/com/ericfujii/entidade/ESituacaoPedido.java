@@ -2,9 +2,11 @@ package br.com.ericfujii.entidade;
 
 public enum ESituacaoPedido {
 	NOVO("#FFC800"),
-	AVISADO("#2895F1"),
-	ENVIADO("#809A00"),
-	CANCELADO("#DD4433");
+	AVISADO("#87CEEB"),
+	EDITAR("#FF6347"),
+	ENVIADO("#98FB98"),
+	CANCELADO("#FF6A6A"),
+	FINALIZADO("#98FB98");
 	
 	ESituacaoPedido(String corFundo) {
 		this.corFundo = corFundo;

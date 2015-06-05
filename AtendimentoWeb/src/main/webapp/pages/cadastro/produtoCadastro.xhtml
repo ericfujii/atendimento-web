@@ -38,6 +38,11 @@
 						</h:panelGrid>
 						
 						<h:panelGrid columns="2" style="margin-bottom:10px">
+					        <p:outputLabel for="ordem" value="Ordem: " />
+			        		<p:spinner id="ordem" value="#{produtoCadastroBean.produto.ordem}" min="0" max="100" />
+		    			</h:panelGrid>
+						
+						<h:panelGrid columns="2" style="margin-bottom:10px">
 							<p:commandButton styleClass="button" 
 											 id="salvarBTN" 
 											 actionListener="#{produtoCadastroBean.salvar}" 
@@ -64,6 +69,10 @@
 					    
 					    <p:column headerText="Tipo">
 					        <h:outputText value="#{produto.produtoTipo.nome}" />
+					    </p:column>
+					    
+					    <p:column headerText="Ordem">
+					        <h:outputText value="#{produto.ordem}" />
 					    </p:column>
 					    
    					    <p:column headerText="Situação">

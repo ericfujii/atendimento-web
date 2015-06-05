@@ -11,7 +11,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
-import javax.persistence.criteria.CriteriaBuilder.Case;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,7 +21,6 @@ import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
-import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
 @ViewScoped
@@ -192,5 +190,13 @@ public class PedidoCadastroBean {
 	public void setItensAdicionados(List<ItemPedido> itensAdicionados) {
 		this.itensAdicionados = itensAdicionados;
 	}
-	
+
+	public boolean isEdicao() {
+		return edicao;
+	}
+
+	public void setEdicao(boolean edicao) {
+		this.edicao = edicao;
+	}
+
 }

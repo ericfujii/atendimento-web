@@ -26,7 +26,7 @@ public class ProdutoCadastroBean {
 		selectProdutos.append("FROM Produto p ");
 		selectProdutos.append("JOIN FETCH p.produtoTipo pt ");
 		//selectProdutos.append("WHERE p.situacao = 'ATIVO' ");
-		selectProdutos.append("ORDER BY p.nome, p.id ");
+		selectProdutos.append("ORDER BY p.ordem, p.id ");
 	}
 	
 	private StringBuilder selectprodutosTipos = new StringBuilder();
