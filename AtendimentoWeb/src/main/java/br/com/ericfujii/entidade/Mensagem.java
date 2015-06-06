@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="mensagem")
-public class Mensagem {
+public class Mensagem{
 
 
 	@Id
@@ -32,13 +32,14 @@ public class Mensagem {
 	private Date dataMensagem;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "_usuario")
+	@JoinColumn(name = "_remetente")
 	private Usuario remetente;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="_usuario")
-	private List<Usuario> destinatarios;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="_destinatario")
+	private Usuario destinatario;
 
+	/* *************************************************************** */
 	public Mensagem(){
 
 	}
@@ -46,9 +47,9 @@ public class Mensagem {
 	public Mensagem(Integer id){
 		this.id = id;
 	}
-
-
-
+	
+	
+	/* *************************************************************** */
 	public Integer getId() {
 		return id;
 	}
@@ -81,18 +82,11 @@ public class Mensagem {
 		this.remetente = remetente;
 	}
 
-	public List<Usuario> getDestinatarios() {
-		return destinatarios;
+	public Usuario getDestinatario() {
+		return destinatario;
 	}
 
-	public void setDestinatarios(List<Usuario> destinatarios) {
-		this.destinatarios = destinatarios;
+	public void setDestinatario(Usuario destinatario) {
+		this.destinatario = destinatario;
 	}
-
-
-
-
-
-
-
 }

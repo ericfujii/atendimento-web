@@ -7,25 +7,46 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<link type="text/css" rel="stylesheet" href="/AtendimentoWeb/faces/style/principal.css" />
+	<link type="text/css" rel="stylesheet"
+		href="/AtendimentoWeb/faces/style/principal.css" />
 </h:head>
 
 <body>
 	<ui:include src="../../menu.xhtml" />
 	<div id="conteudo">
 		<h:form>
-			<p:dataScroller id="mensagem_mensagens" value="#{chatBean.mensagens}" var="m">
-				<p:outputLabel value="#{m.dataMensagem}">
-					<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm" />
-				</p:outputLabel>
-				<p:outputLabel value="#{m.mensagem}"></p:outputLabel>
-			</p:dataScroller>
-			<p:inputTextarea id="mensagem_texto"
-				value="#{chatBean.mensagem.mensagem}" styleClass="mensagem_chat">
-			</p:inputTextarea>
-			<p:commandButton value="ENVIAR"
-				actionListener="#{chatBean.enviaMensagem()}" 
-				update="mensagem_texto mensagem_mensagens" process="@this" />
+			<p:panelGrid columns="1">
+				<p:panelGrid columns="2">
+					<p:outputLabel>Destinatários: </p:outputLabel>
+					<p:selectManyMenu value="#{chatBean.destinatariosSelecionados}"
+						converter="javax.faces.Integer">
+						<f:selectItems value="#{chatBean.destinatariosDisponiveis}" />
+					</p:selectManyMenu>
+				</p:panelGrid>
+				
+				<p:dataScroller id="mensagem_mensagens"
+					value="#{chatBean.mensagens.entrySet()}" var="m">
+					<p:panelGrid columns="1">
+					<h:panelGroup>
+					<p:outputLabel value="#{m.key}" style="color:red;">
+						<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss" />
+					</p:outputLabel>
+					<p:outputLabel value="#{chatBean.retornaDestinoMensagens(m.value)}" />
+					</h:panelGroup>
+					
+					<p:outputLabel value="#{m.value.get(0).mensagem}" style="marging_left: 10px;"/>
+					</p:panelGrid>
+				</p:dataScroller>
+				
+				<p:panelGrid columns="2">
+					<p:inputTextarea id="mensagem_texto"
+						value="#{chatBean.textoMensagem}" styleClass="mensagem_chat">
+					</p:inputTextarea>
+					<p:commandButton value="ENVIAR"
+						actionListener="#{chatBean.enviaMensagem()}"
+						update="mensagem_texto mensagem_mensagens" process="@form" />
+				</p:panelGrid>
+			</p:panelGrid>
 		</h:form>
 	</div>
 </body>
