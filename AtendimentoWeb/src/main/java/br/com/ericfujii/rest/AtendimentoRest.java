@@ -1,6 +1,7 @@
 package br.com.ericfujii.rest;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,6 +10,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import br.com.ericfujii.entidade.Usuario;
+import br.com.ericfujii.hibernate.HibernateUtil;
 
 @Path("/atendimentoRest")
 public class AtendimentoRest implements Serializable {
@@ -24,12 +31,26 @@ public class AtendimentoRest implements Serializable {
 	public Response processar(RequestAtendimentoRest request) {
 		ResponseAtendimentoRest response = new ResponseAtendimentoRest();
 		try {
-			if (request.getCodigoRequest().equals(ECodigoRequest.CARGA_PACOTES)) {
+			if (request.getCodigoFuncao().equals(ECodigoFuncao.CARGA_PACOTES)) {
 				response.setProdutosTipos(restServico.obterProdutosTipos());
 				response.setProdutos(restServico.obterProdutos());
 				response.setUsuarios(restServico.obterUsuarios());
 				response.setPedidos(restServico.obterPedidos());
 				response.setItensPedidos(restServico.obterItensPedidos());
+			} else if(request.getCodigoFuncao().equals(ECodigoFuncao.LOGIN)) {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery("From Usuario u WHERE u.login = '" + request.getLogin() + "' AND u.senha = '" + request.getSenha() + "'");
+				List<Usuario> usuarios = q.list();
+				
+				if (usuarios == null || usuarios.size() == 0) {
+					response.setCodigoResponse(ECodigoResponse.ERROR);
+					response.setMessage("Usuário/Senha incorretos!");
+				} else {
+					response.setCodigoResponse(ECodigoResponse.OK);
+					response.setIdUsuario(usuarios.get(0).getId());
+					response.setLogin(usuarios.get(0).getLogin());
+					response.setNomeUsuario(usuarios.get(0).getNome());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

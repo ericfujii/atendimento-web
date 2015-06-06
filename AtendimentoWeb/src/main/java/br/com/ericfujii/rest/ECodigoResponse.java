@@ -1,5 +1,6 @@
 package br.com.ericfujii.rest;
 
 public enum ECodigoResponse {
-	ERROR;
+	ERROR,
+	OK;
 }
