@@ -14,10 +14,10 @@
 <body>
 	<ui:include src="../../menu.xhtml" />
 	<div id="conteudo">
-		<h:form>
+		<h:form id="formChat">
 			<p:commandButton value="Atualizar"
 				actionListener="#{chatBean.listaMensagens()}" process="@this"
-				update="@form" />
+				update="@form" oncomplete="PF('scroller').scrollTo(100, 100)"/>
 			<h:panelGrid columns="1" styleClass="chat">
 				<h:panelGrid columns="2">
 					<p:outputLabel>Destinatários: </p:outputLabel>
@@ -28,7 +28,7 @@
 				</h:panelGrid>
 
 				<p:dataScroller id="mensagem_mensagens" chunkSize="10" mode="inline" scrollHeight="300"
-					value="#{chatBean.mensagens.entrySet()}" var="m" styleClass="chat">
+					value="#{chatBean.mensagens.entrySet()}" var="m" styleClass="scroll" widgetVar="scroller">
 					<h:panelGrid columns="1">
 						<h:panelGroup>
 							<p:outputLabel value="#{m.key}" styleClass="mensagem_data">
@@ -50,7 +50,7 @@
 					</p:inputTextarea>
 					<p:commandButton value="ENVIAR"
 						actionListener="#{chatBean.enviaMensagem()}"
-						update="mensagem_texto mensagem_mensagens" process="@form" />
+						update="mensagem_texto mensagem_mensagens" process="@form" oncomplete="bottom();"/>
 				</h:panelGrid>
 			</h:panelGrid>
 		</h:form>
