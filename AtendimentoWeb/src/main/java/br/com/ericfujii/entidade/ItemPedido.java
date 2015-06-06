@@ -15,29 +15,52 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name="item_pedido")
 public class ItemPedido {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(name = "id")
 	private Integer id;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "_produto")
+	@XmlElement(name = "produto")
 	private Produto produto;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "_pedido")
+	@XmlElement(name = "pedido")
 	private Pedido pedido;
+	
+	@XmlElement(name = "quantidade_mesa")
 	private Integer quantidadeMesa = 0;
+	
+	@XmlElement(name = "viagem")
 	private Boolean viagem = false;
+	
+	@XmlElement(name = "quantidadeViagem")
 	private Integer quantidadeViagem = 0;
+	
+	@XmlElement(name = "observacao")
 	private String observacao;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao_pedido")
+	@XmlElement(name = "situacao_pedido")
 	private ESituacaoPedido situacaoPedido;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_hora_ultima_situacao")
+	@XmlElement(name = "data_hora_ultima_situacao")
 	private Calendar dataHotaUltimaSituacao;
 	
 	public Integer getId() {

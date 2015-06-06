@@ -15,23 +15,38 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "pedido")
 public class Pedido {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(name = "id")
 	private Integer id;
+	
+	@XmlElement(name = "cliente")
 	private String cliente;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_pedido")
+	@XmlElement(name = "tipo_pedido")
 	private ETipoPedido tipoPedido;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "_usuario")
+	@XmlElement(name = "usuario")
 	private Usuario usuario;
 	
 	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@XmlTransient
 	private List<ItemPedido> pedidos;
 	
 	public Integer getId() {
