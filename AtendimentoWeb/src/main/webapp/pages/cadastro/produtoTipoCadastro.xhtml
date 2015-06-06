@@ -16,7 +16,14 @@
 			<h:form prependId="false">
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 				<h:panelGroup id="camposCadastro">
-					<p:fieldset legend="Cadastro"  style="margin-bottom: 10px;">
+					<p:fieldset legend="#{(empty produtoTipoCadastroBean.produtoTipo.id) ? 'Cadastro' : 'Edição'} de Tipos de Produto"  style="margin-bottom: 10px;">
+						<h:panelGroup rendered="#{not empty produtoTipoCadastroBean.produtoTipo.id}">
+							<h:panelGrid columns="2" style="margin-bottom:10px">
+								<h:outputText for="id" value="Id:" />
+								<p:inputText id="id" value="#{produtoTipoCadastroBean.produtoTipo.id}" disabled="true"/>
+							</h:panelGrid>
+						</h:panelGroup>
+						
 						<h:panelGrid columns="2" style="margin-bottom:10px">
 							<h:outputText for="nome" value="Nome :" />
 							<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
@@ -26,11 +33,23 @@
 			        		<p:selectBooleanCheckbox id="bebida" value="#{produtoTipoCadastroBean.produtoTipo.bebida}" />
 		        		</h:panelGrid>
 						<h:panelGrid columns="2" style="margin-bottom:10px">
-							<p:commandButton styleClass="button" id="commit" update="camposCadastro tabelaTipos" actionListener="#{produtoTipoCadastroBean.salvar}" ajax="true" value="Salvar Tipo Produto"/>
+							<p:commandButton 
+											styleClass="button" 
+											id="commit" 
+											update="camposCadastro tabelaTipos" 
+											actionListener="#{produtoTipoCadastroBean.salvar}" 
+											ajax="true" 
+											value="Salvar Tipo Produto"/>
+											
+						   <p:commandButton styleClass="button" 
+											 id="cancelarBTN" 
+											 actionListener="#{produtoTipoCadastroBean.construirProdutoTipo()}" 
+											 ajax="false" 
+											 value="Cancelar"/>
 						</h:panelGrid>
 					</p:fieldset>
 				</h:panelGroup>
-				<p:fieldset legend="Listagem" toggleable="true" toggleSpeed="500">
+				<p:fieldset legend="Listagem de Tipos de Produtos" toggleable="true" toggleSpeed="500">
         			<p:dataTable id="tabelaTipos" var="tipo" value="#{produtoTipoCadastroBean.produtoTipos}" rowIndexVar="i" emptyMessage="Nenhum tipo cadastrado">
 					    <p:column headerText="Id">
 					        <h:outputText value="#{tipo.id}" />
@@ -45,8 +64,21 @@
 					    </p:column>
 					    
 					    <p:column headerText="Opções">
-					        <p:commandLink action="#{produtoTipoCadastroBean.editar(i)}" update="camposCadastro" value="Editar" style="margin-right: 10px;"/>
-					        <p:commandLink action="#{produtoTipoCadastroBean.inativar(i)}" update="tabelaTipos" value="Inativar" />
+					        <p:commandLink 	disabled="#{tipo.situacao eq 'INATIVO'}"
+					        				action="#{produtoTipoCadastroBean.editar(i)}" 
+					        				update="camposCadastro" 
+					        				value="Editar" 
+					        				style="margin-right: 10px;"/>
+					        				
+					        <p:commandLink  rendered="#{tipo.situacao eq 'ATIVO'}"
+					        				action="#{produtoTipoCadastroBean.inativar(i)}" 
+					        				update="tabelaTipos" 
+					        				value="Inativar" />
+					        				
+   					        <p:commandLink  rendered="#{tipo.situacao eq 'INATIVO'}"
+					        				action="#{produtoTipoCadastroBean.reativar(i)}" 
+					        				update="tabelaTipos" 
+					        				value="Reativar" />
 					    </p:column>
 					</p:dataTable>
 	    		</p:fieldset>

@@ -97,7 +97,9 @@
 					        	action="#{produtoCadastroBean.reativar(produto)}" 
 					        	update="camposEntradaPG, tabelaProdutos" 
 					        	value="Reativar"	
-					        	rendered="#{produto.situacao eq 'INATIVO'}"/>
+					        	rendered="#{produto.situacao eq 'INATIVO'}"
+					        	disabled="#{produto.produtoTipo.situacao eq 'INATIVO'}"
+					        	title="#{(produto.produtoTipo.situacao eq 'INATIVO') ? 'Para reativar este Produto, reative antes o Tipo' : ''}"/>
 					    </p:column>
 					</p:dataTable>
 	    		</p:fieldset>

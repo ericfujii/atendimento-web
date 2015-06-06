@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import br.com.ericfujii.entidade.ESituacao;
 import br.com.ericfujii.entidade.ProdutoTipo;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
@@ -15,30 +16,19 @@ import br.com.ericfujii.hibernate.HibernateUtil;
 @ManagedBean
 public class ProdutoTipoCadastroBean {
 
-	private ProdutoTipo produtoTipo = new ProdutoTipo();
+	private ProdutoTipo produtoTipo;
 	private List<ProdutoTipo> produtoTipos;
-
-	public ProdutoTipo getProdutoTipo() {
-		return produtoTipo;
-	}
 	
 	@PostConstruct
 	public void postContruct() {
+		construirProdutoTipo();
 		atualizarLista();
 	}
-
-	public void setProdutoTipo(ProdutoTipo produtoTipo) {
-		this.produtoTipo = produtoTipo;
-	}
 	
-	public List<ProdutoTipo> getProdutoTipos() {
-		return produtoTipos;
+	public void construirProdutoTipo() {
+		this.produtoTipo = new ProdutoTipo();
 	}
 
-	public void setProdutoTipos(List<ProdutoTipo> produtoTipos) {
-		this.produtoTipos = produtoTipos;
-	}
-	
 	public void salvar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
@@ -65,13 +55,36 @@ public class ProdutoTipoCadastroBean {
 		produtoTipo = produtoTipos.get(row);
 	}
 	
-	public void excluir(int row) {
+	public void inativar(int row) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
 		produtoTipo = produtoTipos.get(row);
-		session.delete(produtoTipo);
+		produtoTipo.setSituacao(ESituacao.INATIVO);
+		session.update(produtoTipo);
+		session.createQuery("UPDATE Produto SET situacao = 'INATIVO' WHERE produtoTipo.id =:_produtoTipo")
+			.setParameter("_produtoTipo", produtoTipo.getId())
+			.executeUpdate();
 		session.getTransaction().commit();
 		session.close();
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto " 
+    	+ produtoTipo.getNome() 
+    	+ " inativado com sucesso!", ""));
+    	construirProdutoTipo();
+		atualizarLista();
+	}
+	
+	public void reativar(int row) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+		produtoTipo = produtoTipos.get(row);
+		produtoTipo.setSituacao(ESituacao.ATIVO);
+		session.update(produtoTipo);
+		session.getTransaction().commit();
+		session.close();
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto " 
+    	+ produtoTipo.getNome() 
+    	+ " reativado com sucesso!", ""));
+		construirProdutoTipo();
 		atualizarLista();
 	}
 	
@@ -82,4 +95,20 @@ public class ProdutoTipoCadastroBean {
 		session.close();
 	}
 	
+
+	public ProdutoTipo getProdutoTipo() {
+		return produtoTipo;
+	}
+	
+	public void setProdutoTipo(ProdutoTipo produtoTipo) {
+		this.produtoTipo = produtoTipo;
+	}
+	
+	public List<ProdutoTipo> getProdutoTipos() {
+		return produtoTipos;
+	}
+
+	public void setProdutoTipos(List<ProdutoTipo> produtoTipos) {
+		this.produtoTipos = produtoTipos;
+	}
 }
