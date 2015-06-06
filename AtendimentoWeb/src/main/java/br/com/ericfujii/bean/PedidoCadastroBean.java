@@ -99,6 +99,7 @@ public class PedidoCadastroBean {
 			
 			pedido.setPedidos(itensAdicionados);
 			pedido.setTipoPedido(tipoPedido);
+			pedido.setDataHoraCadatro(calendar);
 			
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			  

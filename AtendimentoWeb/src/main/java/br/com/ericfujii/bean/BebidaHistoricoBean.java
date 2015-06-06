@@ -1,8 +1,6 @@
 package br.com.ericfujii.bean;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,15 +11,14 @@ import org.hibernate.Session;
 
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
-import br.com.ericfujii.entidade.Produto;
+import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.hibernate.HibernateUtil;
-import br.com.ericfujii.util.DataUtil;
 
 @ViewScoped
 @ManagedBean
-public class ComidaListagemBean {
+public class BebidaHistoricoBean {
 
-	private List<Produto> produtos;
+	private List<Pedido> pedidos;
 	private ESituacaoPedido[] situacoes = ESituacaoPedido.values();
 	private boolean editar = false;
 	private ItemPedido itemPedidoEdicao;
@@ -58,12 +55,11 @@ public class ComidaListagemBean {
 		itemPedidoEdicao = null;
 	}
 	
-	public void atualizarItem(Integer idProduto, Integer idItem) {
-		for (Produto produto : produtos) {
-			if (produto.getId().equals(idProduto)) {
-				for (ItemPedido itemPedido : produto.getItensPedidos()) {
+	public void atualizarItem(Integer idPedido, Integer idItem) {
+		for (Pedido pedido : pedidos) {
+			if (pedido.getId().equals(idPedido)) {
+				for (ItemPedido itemPedido : pedido.getPedidos()) {
 					if (itemPedido.getId().equals(idItem)) {
-						itemPedido.setDataHotaUltimaSituacao(Calendar.getInstance());
 						Session session = HibernateUtil.getSessionFactory().openSession();
 				        session.beginTransaction();
 			        	session.update(itemPedido);
@@ -88,49 +84,34 @@ public class ComidaListagemBean {
 	}
 	
 	public void atualizarTela() {
+		pedidos = new ArrayList<Pedido>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE pt.bebida = false ORDER BY p.ordem ").list();
-		for (Produto produto : produtos) {
-			Integer contadorLocal = 0;
-			Integer contadorViagem = 0;
-			Integer contadorTotal = 0;
-			List<ItemPedido> itens = produto.getItensPedidos();
-			Collections.sort(produto.getItensPedidos());
-			List<ItemPedido> remover = new ArrayList<ItemPedido>();
+		List<Pedido> pedidosTotal = (List<Pedido>) session.createQuery("FROM Pedido p ORDER BY p.dataHoraCadatro").list();
+		
+		for (Pedido pedido : pedidosTotal) {
+			Pedido pedidoTemp = new Pedido();
+			pedidoTemp.setPedidos(new ArrayList<ItemPedido>());
+			List<ItemPedido> itens = pedido.getPedidos();
 			for (ItemPedido itemPedido : itens) {
-				if (itemPedido.getSituacaoPedido() == ESituacaoPedido.NOVO) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() == ESituacaoPedido.EDITAR) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() == ESituacaoPedido.AVISADO) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() != ESituacaoPedido.CANCELADO){
-					if (DataUtil.calcularDiferencaSegundos(itemPedido.getDataHotaUltimaSituacao(), Calendar.getInstance()) > 20) {
-						remover.add(itemPedido);
-					}
+				if (itemPedido.getProduto().getProdutoTipo().getBebida()) {
+					pedidoTemp.getPedidos().add(itemPedido);
 				}
 			}
-			for (ItemPedido itemPedido : remover) {
-				produto.getItensPedidos().remove(itemPedido);
+			
+			if (pedidoTemp.getPedidos().size() > 0) {
+				pedidoTemp.setCliente(pedido.getCliente());
+				pedidoTemp.setId(pedido.getId());
+				pedidos.add(pedidoTemp);
 			}
-			produto.setPendentesLocal(contadorLocal);
-			produto.setPendentesViagem(contadorViagem);
-			produto.setPendentesTotal(contadorTotal);
 		}
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	public ESituacaoPedido[] getSituacoes() {

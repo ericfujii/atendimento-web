@@ -1,5 +1,6 @@
 package br.com.ericfujii.entidade;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,6 +47,11 @@ public class Pedido {
 	@JoinColumn(name = "_usuario")
 	@XmlElement(name = "usuario")
 	private Usuario usuario;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_hora_cadastro")
+	@XmlElement(name = "data_hora_cadastro")
+	private Calendar dataHoraCadatro;
 	
 	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@XmlTransient
@@ -78,6 +86,12 @@ public class Pedido {
 	}
 	public void setPedidos(List<ItemPedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+	public Calendar getDataHoraCadatro() {
+		return dataHoraCadatro;
+	}
+	public void setDataHoraCadatro(Calendar dataHoraCadatro) {
+		this.dataHoraCadatro = dataHoraCadatro;
 	}
 	
 }

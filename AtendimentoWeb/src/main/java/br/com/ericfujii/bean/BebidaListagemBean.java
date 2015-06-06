@@ -29,7 +29,7 @@ public class BebidaListagemBean {
 	
 	@PostConstruct
 	public void postConstruct() {
-		atualizartela();
+		atualizarTela();
 	}
 	
 	public void confirmarEdicao() {
@@ -47,7 +47,24 @@ public class BebidaListagemBean {
     	session.getTransaction().commit();
     	session.close();
     	
-    	atualizartela();
+    	atualizarTela();
+	}
+	
+	public void enviarTodos(Integer idPedido) {
+		for (Pedido pedido : pedidos) {
+			if (pedido.getId().equals(idPedido)) {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+		        session.beginTransaction();
+				for (ItemPedido itemPedido : pedido.getPedidos()) {
+					itemPedido.setSituacaoPedido(ESituacaoPedido.ENVIADO);
+		        	session.update(itemPedido);
+				}
+				session.getTransaction().commit();
+	        	session.close();
+	        	break;
+			}
+		}
+		atualizarTela();
 	}
 	
 	public void cancelarEdicao() {
@@ -80,10 +97,10 @@ public class BebidaListagemBean {
 				break;
 			}
 		}
-		atualizartela();
+		atualizarTela();
 	}
 	
-	public void atualizartela() {
+	public void atualizarTela() {
 		pedidos = new ArrayList<Pedido>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Pedido> pedidosTotal = (List<Pedido>) session.createQuery("FROM Pedido p ").list();
@@ -93,7 +110,9 @@ public class BebidaListagemBean {
 			pedidoTemp.setPedidos(new ArrayList<ItemPedido>());
 			List<ItemPedido> itens = pedido.getPedidos();
 			for (ItemPedido itemPedido : itens) {
-				if (itemPedido.getProduto().getProdutoTipo().getBebida()) {
+				if (itemPedido.getProduto().getProdutoTipo().getBebida() 
+						&& itemPedido.getSituacaoPedido() != ESituacaoPedido.ENVIADO
+						&& itemPedido.getSituacaoPedido() != ESituacaoPedido.FINALIZADO) {
 					pedidoTemp.getPedidos().add(itemPedido);
 				}
 			}
