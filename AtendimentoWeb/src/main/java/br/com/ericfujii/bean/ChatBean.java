@@ -4,10 +4,13 @@ import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -102,7 +105,7 @@ public class ChatBean {
 		for(Mensagem m: mensagemList){
 			sb.append(m.getDestinatario().getNome());
 			if(mensagemList.indexOf(m) == (mensagemList.size() - 1)){
-				sb.append(": ");
+				sb.append(". ");
 			}else{
 				sb.append(", ");
 			}
@@ -118,13 +121,14 @@ public class ChatBean {
 			q.setParameter("_remetente", usuarioBalcao);
 			List<Mensagem> mensagemList = q.list();
 			if(mensagemList!= null && !mensagemList.isEmpty()){
-				mensagens = new HashMap<Date, List<Mensagem>>();
+				mensagens = new TreeMap<Date, List<Mensagem>>();
 				for(Mensagem m : mensagemList){
 					if(!mensagens.containsKey(m.getDataMensagem())){
 						mensagens.put(m.getDataMensagem(), new ArrayList<Mensagem>());
 					}
 					mensagens.get(m.getDataMensagem()).add(m);
 				}
+				
 			}
 		}finally{
 			session.close();

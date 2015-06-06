@@ -25,14 +25,28 @@
 	overflow: scroll;
 }
 
+.chat{
+	max-width: 400px;
+	max-height: 400px;
+}
 .botao_chat{
 	float: right;
-	width: 30px;
-	height: 50px;
+	width: 30%;
+	height: 40px;
 }
+
 
 .mensagem_chat{
 	float: left;
-	width: 30px;
-	height: 50%;
+	height: 3em;
+	width: 400px;
+}
+
+.mensagem_data{
+	color: red;
+	padding-right: 10px;
+}
+
+.mensagem_texto{
+	margin-left: 20px;
 }
