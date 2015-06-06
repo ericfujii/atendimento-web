@@ -9,6 +9,12 @@
 <h:head>
 	<link type="text/css" rel="stylesheet"
 		href="/AtendimentoWeb/faces/style/principal.css" />
+	<script type="text/javascript">
+		function bottom(){
+			document.getElementById('formChat:mensagem_mensagens').scrollTop = 
+				document.getElementById('formChat:mensagem_mensagens').scrollHeight;
+			}
+		</script>
 </h:head>
 
 <body>
@@ -17,7 +23,7 @@
 		<h:form id="formChat">
 			<p:commandButton value="Atualizar"
 				actionListener="#{chatBean.listaMensagens()}" process="@this"
-				update="@form" oncomplete="PF('scroller').scrollTo(100, 100)"/>
+				update="@form" oncomplete="bottom();"/>
 			<h:panelGrid columns="1" styleClass="chat">
 				<h:panelGrid columns="2">
 					<p:outputLabel>Destinatários: </p:outputLabel>
@@ -27,8 +33,10 @@
 					</p:selectManyMenu>
 				</h:panelGrid>
 
-				<p:dataScroller id="mensagem_mensagens" chunkSize="10" mode="inline" scrollHeight="300"
-					value="#{chatBean.mensagens.entrySet()}" var="m" styleClass="scroll" widgetVar="scroller">
+
+				<p:dataList id="mensagem_mensagens" widgetVar="scroll"
+					value="#{chatBean.mensagens.entrySet()}" var="m"
+					styleClass="scroll">
 					<h:panelGrid columns="1">
 						<h:panelGroup>
 							<p:outputLabel value="#{m.key}" styleClass="mensagem_data">
@@ -42,7 +50,7 @@
 						<p:outputLabel value="#{m.value.get(0).mensagem}"
 							styleClass="mensagem_texto" />
 					</h:panelGrid>
-				</p:dataScroller>
+				</p:dataList>
 
 				<h:panelGrid columns="2">
 					<p:inputTextarea id="mensagem_texto"
@@ -50,7 +58,8 @@
 					</p:inputTextarea>
 					<p:commandButton value="ENVIAR"
 						actionListener="#{chatBean.enviaMensagem()}"
-						update="mensagem_texto mensagem_mensagens" process="@form" oncomplete="bottom();"/>
+						update="mensagem_texto mensagem_mensagens" process="@form"
+						 oncomplete="bottom();"/>
 				</h:panelGrid>
 			</h:panelGrid>
 		</h:form>

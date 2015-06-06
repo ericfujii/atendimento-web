@@ -42,7 +42,21 @@
 	height: 3em;
 	width: 400px;
 }
-
+.scroll{
+	width: 400px!important;
+	height: 400px!important;
+    overflow: scroll!important;
+      list-style-type: none!important;
+}
+.ui-datalist-data{
+	display: block;
+  list-style-type: none;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
+}
 .mensagem_data{
 	color: red;
 	padding-right: 10px;
