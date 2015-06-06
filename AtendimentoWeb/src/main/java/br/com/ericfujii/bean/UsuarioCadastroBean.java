@@ -1,116 +1,157 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
 import org.hibernate.Session;
-
 import br.com.ericfujii.entidade.ESituacao;
-import br.com.ericfujii.entidade.Produto;
-import br.com.ericfujii.entidade.ProdutoTipo;
+import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
 @ViewScoped
 @ManagedBean
 public class UsuarioCadastroBean {
 
-	private Produto produto;
-	private List<ProdutoTipo> produtosTipos;
-	private List<Produto> produtos;
+	private Usuario usuario;
+	private List<Usuario> usuarios;
+	
+	private StringBuilder selectUsuarios = new StringBuilder();
+	{
+		selectUsuarios.append("FROM Usuario u ");
+		selectUsuarios.append("ORDER BY u.nome, u.id ");
+	}
 	
 	@PostConstruct
 	public void inicializar() {
-		construirProduto();
-		carregarProdutosTipos();
-		carregarProdutos();
+		construirUsuario();
+		carregarUsuarios();
+	}
+	
+	public void construirUsuario() {
+		this.usuario = new Usuario();
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void carregarProdutos() {
+	private void carregarUsuarios() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE p.situacao = 'ATIVO' ORDER BY p.nome ").list();
+		usuarios = (List<Usuario>) session
+				.createQuery(selectUsuarios.toString())
+				.list();
+		session.close();
 	}
 
-	private void construirProduto() {
-		produto = new Produto();
-		produto.setProdutoTipo(new ProdutoTipo());
-	}
-
-	@SuppressWarnings("unchecked")
-	private void carregarProdutosTipos() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtosTipos = (List<ProdutoTipo>) session.createQuery("FROM ProdutoTipo pt WHERE pt.situacao = 'ATIVO' ORDER BY pt.nome").list();
-	}
-	
 	public void salvar() {
 		
-		if ((produto.getNome() == null) 
-				|| (produto.getNome().trim().isEmpty())) {
-			makeMessage(FacesMessage.SEVERITY_WARN, "Informe o nome!", "");
-			return;
-		}
-		
-		if ((produto.getProdutoTipo().getId() == null)) {
-			makeMessage(FacesMessage.SEVERITY_WARN, "Selecione o Tipo!", "");
+		if (!validarCampos()) {
 			return;
 		}
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        if (produto.getId() == null) {
-        	session.save(produto);
-        	makeMessage(FacesMessage.SEVERITY_INFO, "Produto cadastrado com sucesso!", "");
+        if (usuario.getId() == null) {
+        	session.save(usuario);
+        	makeMessage(FacesMessage.SEVERITY_INFO, "Usuário " 
+        											+ usuario.getNome() 
+        											+ " cadastrado com sucesso!", "");
         } else {
-        	session.update(produto);
-        	makeMessage(FacesMessage.SEVERITY_INFO, "Produto editado com sucesso!", "");
+        	session.update(usuario);
+        	makeMessage(FacesMessage.SEVERITY_INFO, "Usuário " 
+        											+ usuario.getNome() 
+        											+ " editado com sucesso!", "");
         }
         session.getTransaction().commit();
         
-        construirProduto();
-        carregarProdutos();
+        construirUsuario();
+        carregarUsuarios();
 	}
 	
-	public void editar(Produto produtoSelecionado) {
-		this.produto = produtoSelecionado;
+	private boolean validarCampos() {
+		if ((usuario.getNome() == null) 
+				|| (usuario.getNome().trim().isEmpty())) {
+			makeMessage(FacesMessage.SEVERITY_WARN, "Informe o nome!", "");
+			return false;
+		}
+		
+		if ((usuario.getLogin() == null) 
+				|| (usuario.getLogin().trim().isEmpty())) {
+			makeMessage(FacesMessage.SEVERITY_WARN, "Informe o login!", "");
+			return false;
+		}
+		
+		if ((usuario.getSenha() == null) 
+				|| (usuario.getSenha().trim().isEmpty())) {
+			makeMessage(FacesMessage.SEVERITY_WARN, "Informe a senha!", "");
+			return false;
+		}
+		
+		if ((usuario.getConfirmacaoSenha() == null) 
+				|| (usuario.getConfirmacaoSenha().trim().isEmpty())) {
+			makeMessage(FacesMessage.SEVERITY_WARN, "Informe a confirmação da senha!", "");
+			return false;
+		}
+		
+		if (!usuario.getSenha().equals(usuario.getConfirmacaoSenha())) {
+			makeMessage(FacesMessage.SEVERITY_WARN, "Confirmação de senha errada!", "");
+			return false;
+		}
+		return true;
+	}
+
+	public void editar(Usuario usuarioSelecionado) {
+		this.usuario = usuarioSelecionado;
 	}
 	
-	public void excluir(Produto produtoSelecionado) {
-		produtoSelecionado.setSituacao(ESituacao.INATIVO);
+	public void inativar(Usuario usuarioSelecionado) {
+		usuarioSelecionado.setSituacao(ESituacao.INATIVO);
+		atualizar(usuarioSelecionado, "Usuário " 
+									  + usuarioSelecionado.getId()
+									  + " - "
+									  + usuarioSelecionado.getNome() 
+									  + " inativado com sucesso!");
+    	carregarUsuarios();
+	}
+	
+	public void reativar(Usuario usuarioSelecionado) {
+		
+		usuarioSelecionado.setSituacao(ESituacao.ATIVO);
+		atualizar(usuarioSelecionado, "Usuário " 
+									  + usuarioSelecionado.getId()
+									  + " - "
+									  + usuarioSelecionado.getNome() 
+									  + " reativado com sucesso!");
+    	carregarUsuarios();
+	}
+	
+	private void atualizar(Usuario usuario, String message) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.update(produtoSelecionado);
-    	makeMessage(FacesMessage.SEVERITY_INFO, "Produto inativado com sucesso!", "");
+        session.update(usuario);
+    	makeMessage(FacesMessage.SEVERITY_INFO, message, "");
     	session.getTransaction().commit();
-    	carregarProdutos();
+    	session.close();
 	}
 	
 	private void makeMessage(Severity severity, String message, String title) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, title));
 	}
 	
-	public Produto getProduto() {
-		return produto;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	public List<ProdutoTipo> getProdutosTipos() {
-		return produtosTipos;
+	public List<Usuario> getUsuarios() {
+		return usuarios;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 }

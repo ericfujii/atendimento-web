@@ -10,7 +10,7 @@
 		<h:form id="menu">
 			<p:menubar>
 		        <p:submenu label="Cadastro" icon="ui-icon-plus">
-		            <p:menuitem value="Usuário" action="#" icon="ui-icon-person" />
+		            <p:menuitem value="Usuário" action="/pages/cadastro/usuarioCadastro.xhtml" icon="ui-icon-person" />
 		            <p:separator />
 		            <p:menuitem value="Produto" action="/pages/cadastro/produtoCadastro.xhtml" icon="ui-icon-tag" />
 		            <p:separator />
@@ -22,7 +22,13 @@
 		        <p:submenu label="Pedidos" icon="ui-icon-cart">
 		            <p:menuitem value="Comida" action="/pages/listagem/comidaListagem.xhtml" />
 		            <p:separator />
-		            <p:menuitem value="Bebida" url="#" />
+		            <p:menuitem value="Bebida" action="/pages/listagem/bebidaListagem.xhtml" />
+		        </p:submenu>
+		        
+		        <p:submenu label="Histórico" icon="ui-icon-cart">
+		            <p:menuitem value="Comida" action="/pages/historico/comidaHistorico.xhtml" />
+		            <p:separator />
+		            <p:menuitem value="Bebida" action="/pages/historico/bebidaHistorico.xhtml" />
 		        </p:submenu>
 		       
 		        <p:menuitem value="Chat" url="/pages/chat/chat.xhtml" icon="ui-icon-signal-diag" />  

@@ -1,6 +1,5 @@
 package br.com.ericfujii.bean;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -15,11 +14,10 @@ import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.hibernate.HibernateUtil;
-import br.com.ericfujii.util.DataUtil;
 
 @ViewScoped
 @ManagedBean
-public class ComidaListagemBean {
+public class ComidaHistoricoBean {
 
 	private List<Produto> produtos;
 	private ESituacaoPedido[] situacoes = ESituacaoPedido.values();
@@ -96,28 +94,10 @@ public class ComidaListagemBean {
 			Integer contadorTotal = 0;
 			List<ItemPedido> itens = produto.getItensPedidos();
 			Collections.sort(produto.getItensPedidos());
-			List<ItemPedido> remover = new ArrayList<ItemPedido>();
 			for (ItemPedido itemPedido : itens) {
-				if (itemPedido.getSituacaoPedido() == ESituacaoPedido.NOVO) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() == ESituacaoPedido.EDITAR) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() == ESituacaoPedido.AVISADO) {
-					contadorLocal += itemPedido.getQuantidadeMesa() ;
-					contadorViagem += itemPedido.getQuantidadeViagem();
-					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() != ESituacaoPedido.CANCELADO){
-					if (DataUtil.calcularDiferencaSegundos(itemPedido.getDataHotaUltimaSituacao(), Calendar.getInstance()) > 20) {
-						remover.add(itemPedido);
-					}
-				}
-			}
-			for (ItemPedido itemPedido : remover) {
-				produto.getItensPedidos().remove(itemPedido);
+				contadorLocal += itemPedido.getQuantidadeMesa() ;
+				contadorViagem += itemPedido.getQuantidadeViagem();
+				contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
 			}
 			produto.setPendentesLocal(contadorLocal);
 			produto.setPendentesViagem(contadorViagem);

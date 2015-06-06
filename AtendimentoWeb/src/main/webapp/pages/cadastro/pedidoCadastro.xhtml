@@ -14,54 +14,55 @@
 		<ui:include src="../../menu.xhtml" />
 		<div id="conteudo">
 			<h:form prependId="false">
-				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-				<p:fieldset legend="Pedido" style="margin-bottom: 10px;">
-					<h:panelGrid columns="4" style="margin-bottom:10px">
-				        <p:outputLabel for="tipoPedido" value="Tipo Pedido:" />
-				        <p:selectOneRadio id="tipoPedido" value="#{pedidoCadastroBean.tipoPedido}" style="margin-right: 20px;">
-				            <f:selectItems value="#{pedidoCadastroBean.tiposPedido}" />
-				            <f:ajax render="labelCliente" event="change" execute="@this" listener="#{pedidoCadastroBean.alterarTipo}" />
-				        </p:selectOneRadio>
-				        <p:outputLabel id="labelCliente" for="cliente" value="#{pedidoCadastroBean.labelCliente}" />
-						<p:inputText id="cliente" value="#{pedidoCadastroBean.pedido.cliente}" />
-				    </h:panelGrid>
-			    </p:fieldset>
-			    <p:fieldset  legend="Item Pedido" style="margin-bottom: 10px;">
-			    	<h:panelGroup id="camposCadastro">
-					    <h:panelGrid columns="2" style="margin-bottom:10px">
-							<p:outputLabel for="produto" value="Produto: " />
-					        <p:selectOneMenu id="produto" value="#{pedidoCadastroBean.idProduto}">
-					            <f:selectItem itemLabel="Selecione um Produto" itemValue="" />
-					            <f:selectItems value="#{pedidoCadastroBean.produtos}" />
-					        </p:selectOneMenu>
-				        </h:panelGrid>
-				        <h:panelGrid columns="2" style="margin-bottom:10px">
-					        <p:outputLabel for="quantidadeMesa" value="Quant. Local: " />
-			        		<p:spinner id="quantidadeMesa" value="#{pedidoCadastroBean.itemPedido.quantidadeMesa}" min="0" max="100" />
-		    			</h:panelGrid>
-		    			<h:panelGrid columns="2" style="margin-bottom:10px">
-			    			<p:outputLabel for="viagem" value="Viagem? " />
-			        		<p:selectBooleanCheckbox id="viagem" value="#{pedidoCadastroBean.itemPedido.viagem}" >
-			        			<f:ajax execute="@this" render="viagemPG" event="change" />
-			        		</p:selectBooleanCheckbox>
-		        		</h:panelGrid>
-		        		<h:panelGrid id="viagemPG">
-			        		<h:panelGrid columns="2" style="margin-bottom:10px" rendered="#{pedidoCadastroBean.itemPedido.viagem}">
-						        <p:outputLabel for="quantidadeViagem" value="Quant. Viagem: " />
-				        		<p:spinner id="quantidadeViagem" value="#{pedidoCadastroBean.itemPedido.quantidadeViagem}" min="0" max="100" />
-			    			</h:panelGrid>
-		    			</h:panelGrid>
-		    			<h:panelGrid columns="2" style="margin-bottom:10px">
-					    	<p:outputLabel for="observacao" value="Observação" />
-							<p:inputText id="observacao" value="#{pedidoCadastroBean.itemPedido.observacao}" />
+				<h:panelGroup id="camposCadastro">
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+					<p:fieldset legend="Pedido" style="margin-bottom: 10px;">
+						<h:panelGrid columns="4" style="margin-bottom:10px">
+					        <p:outputLabel for="tipoPedido" value="Tipo Pedido:" />
+					        <p:selectOneRadio id="tipoPedido" value="#{pedidoCadastroBean.tipoPedido}" style="margin-right: 20px;">
+					            <f:selectItems value="#{pedidoCadastroBean.tiposPedido}" />
+					            <f:ajax render="labelCliente" event="change" execute="@this" listener="#{pedidoCadastroBean.alterarTipo}" />
+					        </p:selectOneRadio>
+					        <p:outputLabel id="labelCliente" for="cliente" value="#{pedidoCadastroBean.labelCliente}" />
+							<p:inputText id="cliente" value="#{pedidoCadastroBean.pedido.cliente}" />
 					    </h:panelGrid>
-					    <h:panelGrid columns="2" style="margin-bottom:10px">
-							<p:commandButton styleClass="button" id="commit" value="Adicionar Item"> 
-								<f:ajax event="click" execute="camposCadastro" listener="#{pedidoCadastroBean.adicionarItem}" render="camposCadastro tabelaProdutos" />
-							</p:commandButton>
-						</h:panelGrid>
-					</h:panelGroup>
-			    </p:fieldset>
+				    </p:fieldset>
+				    <p:fieldset  legend="Item Pedido" style="margin-bottom: 10px;">
+				    	
+						    <h:panelGrid columns="2" style="margin-bottom:10px">
+								<p:outputLabel for="produto" value="Produto: " />
+						        <p:selectOneMenu id="produto" value="#{pedidoCadastroBean.idProduto}">
+						            <f:selectItem itemLabel="Selecione um Produto" itemValue="" />
+						            <f:selectItems value="#{pedidoCadastroBean.produtos}" />
+						        </p:selectOneMenu>
+					        </h:panelGrid>
+					        <h:panelGrid columns="2" style="margin-bottom:10px">
+						        <p:outputLabel for="quantidadeMesa" value="Quant. Local: " />
+				        		<p:spinner id="quantidadeMesa" value="#{pedidoCadastroBean.itemPedido.quantidadeMesa}" min="0" max="100" />
+			    			</h:panelGrid>
+			    			<h:panelGrid columns="2" style="margin-bottom:10px">
+				    			<p:outputLabel for="viagem" value="Viagem? " />
+				        		<p:selectBooleanCheckbox id="viagem" value="#{pedidoCadastroBean.itemPedido.viagem}" >
+				        			<f:ajax execute="@this" render="viagemPG" event="change" />
+				        		</p:selectBooleanCheckbox>
+			        		</h:panelGrid>
+			        		<h:panelGrid id="viagemPG">
+				        		<h:panelGrid columns="2" style="margin-bottom:10px" rendered="#{pedidoCadastroBean.itemPedido.viagem}">
+							        <p:outputLabel for="quantidadeViagem" value="Quant. Viagem: " />
+					        		<p:spinner id="quantidadeViagem" value="#{pedidoCadastroBean.itemPedido.quantidadeViagem}" min="0" max="100" />
+				    			</h:panelGrid>
+			    			</h:panelGrid>
+			    			<h:panelGrid columns="2" style="margin-bottom:10px">
+						    	<p:outputLabel for="observacao" value="Observação" />
+								<p:inputText id="observacao" value="#{pedidoCadastroBean.itemPedido.observacao}" />
+						    </h:panelGrid>
+						    <h:panelGrid columns="2" style="margin-bottom:10px">
+								<p:commandButton styleClass="button" id="commit" value="Adicionar Item"> 
+									<f:ajax event="click" execute="camposCadastro" listener="#{pedidoCadastroBean.adicionarItem}" render="camposCadastro tabelaProdutos" />
+								</p:commandButton>
+							</h:panelGrid>
+				    </p:fieldset>
+			    </h:panelGroup>
 			    <p:fieldset legend="Itens Adicionados" style="margin-bottom: 10px;">
 			    	<h:panelGrid style="width: 100%">
 				    	<p:commandButton style="float: right;" styleClass="button" id="fecharPedido" value="Fechar Pedido"> 
@@ -73,19 +74,23 @@
 					        <h:outputText value="#{item.produto.nome}" />
 					    </p:column>
 					    
-					    <p:column headerText="Qauntidade Local">
+					    <p:column headerText="Quantidade Local" width="200px;">
 					        <h:outputText value="#{item.quantidadeMesa == 0 ? '-' : item.quantidadeMesa }" />
 					    </p:column>
 					    
-					    <p:column headerText="Viagem">
+					    <p:column headerText="Viagem" width="100px;">
 					        <h:outputText value="#{item.viagem ? 'SIM' : 'NÃO' }" />
 					    </p:column>
 					    
-					    <p:column headerText="Quantidade Viagem">
+					    <p:column headerText="Quantidade Viagem" width="200px;">
 					        <h:outputText value="#{item.quantidadeViagem == 0 ? '-' : item.quantidadeViagem }" />
 					    </p:column>
 					    
-					    <p:column headerText="Opções">
+					    <p:column headerText="Observação">
+					        <h:outputText value="#{item.observacao}" />
+					    </p:column>
+					    
+					    <p:column headerText="Opções" width="200px;">
 					        <p:commandLink actionListener="#{pedidoCadastroBean.editar(i)}" update="camposCadastro" value="Editar" style="margin-right: 10px;"/>
 					        <p:commandLink value="Excluir" >
 					        	<f:ajax event="click" listener="#{pedidoCadastroBean.excluir(i)}" render="tabelaProdutos" />

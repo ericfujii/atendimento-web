@@ -1,16 +1,13 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import br.com.ericfujii.entidade.ProdutoTipo;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
@@ -49,10 +46,14 @@ public class ProdutoTipoCadastroBean {
  
         if (produtoTipo.getId() == null) {
         	session.save(produtoTipo);
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto cadastrado com sucesso!", ""));
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto " 
+        	+ produtoTipo.getNome() 
+        	+ " cadastrado com sucesso!", ""));
         } else {
         	session.update(produtoTipo);
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto editado com sucesso!", ""));
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto " 
+        	+ produtoTipo.getNome() 
+        	+ " editado com sucesso!", ""));
         }
         session.getTransaction().commit();
         produtoTipo = new ProdutoTipo();
@@ -66,24 +67,17 @@ public class ProdutoTipoCadastroBean {
 	
 	public void excluir(int row) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		  
         session.beginTransaction();
-        
 		produtoTipo = produtoTipos.get(row);
-		
 		session.delete(produtoTipo);
-		
 		session.getTransaction().commit();
-		
 		session.close();
-		
 		atualizarLista();
 	}
 	
 	public void atualizarLista() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Query q = session.createQuery("From ProdutoTipo ");
-        
 		produtoTipos = q.list();
 		session.close();
 	}

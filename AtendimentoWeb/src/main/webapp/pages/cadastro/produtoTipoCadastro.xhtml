@@ -46,7 +46,7 @@
 					    
 					    <p:column headerText="Opções">
 					        <p:commandLink action="#{produtoTipoCadastroBean.editar(i)}" update="camposCadastro" value="Editar" style="margin-right: 10px;"/>
-					        <p:commandLink action="#{produtoTipoCadastroBean.excluir(i)}" update="tabelaTipos" value="Excluir" />
+					        <p:commandLink action="#{produtoTipoCadastroBean.inativar(i)}" update="tabelaTipos" value="Inativar" />
 					    </p:column>
 					</p:dataTable>
 	    		</p:fieldset>

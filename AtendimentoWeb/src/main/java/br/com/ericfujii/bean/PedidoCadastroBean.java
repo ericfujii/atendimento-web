@@ -11,7 +11,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
-import javax.persistence.criteria.CriteriaBuilder.Case;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,7 +21,6 @@ import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
-import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.hibernate.HibernateUtil;
 
 @ViewScoped
@@ -91,28 +89,33 @@ public class PedidoCadastroBean {
 	}
 	
 	public void fecharPedido() {
-		Calendar calendar = Calendar.getInstance();
-		for (ItemPedido itemPedido : itensAdicionados) {
-			itemPedido.setPedido(pedido);
-			itemPedido.setDataHotaUltimaSituacao(calendar);
-			itemPedido.setSituacaoPedido(ESituacaoPedido.NOVO);
+		if (pedido.getCliente() != null && !pedido.getCliente().trim().equals("")) {
+			Calendar calendar = Calendar.getInstance();
+			for (ItemPedido itemPedido : itensAdicionados) {
+				itemPedido.setPedido(pedido);
+				itemPedido.setDataHotaUltimaSituacao(calendar);
+				itemPedido.setSituacaoPedido(ESituacaoPedido.NOVO);
+			}
+			
+			pedido.setPedidos(itensAdicionados);
+			pedido.setTipoPedido(tipoPedido);
+			pedido.setDataHoraCadatro(calendar);
+			
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			  
+	        session.beginTransaction();
+	 
+	    	session.save(pedido);
+	    	
+	    	session.getTransaction().commit();
+	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido cadastrado com sucesso!", ""));
+		
+	    	pedido = new Pedido();
+	    	itensAdicionados = new ArrayList<ItemPedido>();
+	    	itemPedido = new ItemPedido();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Insira um cliente!", ""));
 		}
-		
-		pedido.setPedidos(itensAdicionados);
-		pedido.setTipoPedido(tipoPedido);
-		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		  
-        session.beginTransaction();
- 
-    	session.save(pedido);
-    	
-    	session.getTransaction().commit();
-    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido cadastrado com sucesso!", ""));
-	
-    	pedido = new Pedido();
-    	itensAdicionados = new ArrayList<ItemPedido>();
-    	itemPedido = new ItemPedido();
 	}
 	
 	public void alterarTipo() {
@@ -121,7 +124,7 @@ public class PedidoCadastroBean {
 			labelCliente = "Nome Cliente :";
 			break;
 		case MESA:
-			labelCliente = "Núm. Mesa :";
+			labelCliente = "NÃºm. Mesa :";
 			break;
 		default:
 			break;
@@ -192,5 +195,13 @@ public class PedidoCadastroBean {
 	public void setItensAdicionados(List<ItemPedido> itensAdicionados) {
 		this.itensAdicionados = itensAdicionados;
 	}
-	
+
+	public boolean isEdicao() {
+		return edicao;
+	}
+
+	public void setEdicao(boolean edicao) {
+		this.edicao = edicao;
+	}
+
 }
