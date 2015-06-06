@@ -15,16 +15,13 @@
 		<h:form prependId="false">
 			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			<div class="divPai">
-				<c:forEach var="comida" items="#{comidaListagemBean.produtos}">
+				<c:forEach var="pedido" items="#{bebidaListagemBean.pedidos}">
 					<div class="divFilha">
-						<p:fieldset legend="#{comida.nome}" >
-							<p:outputLabel value="Local: #{comida.pendentesLocal}" style="margin-right: 10px;" />
-							<p:outputLabel value="Viagem: #{comida.pendentesViagem}"  style="margin-right: 10px;"  />
-							<p:outputLabel value="Total: #{comida.pendentesTotal}"  style="margin-right: 10px;"  />
-							<p:dataTable var="item" value="#{comida.itensPedidos}" emptyMessage="Sem pedidos">
-							    <p:column headerText="Cli.">
+						<p:fieldset legend="#{pedido.cliente}" >
+							<p:dataTable var="item" value="#{pedido.pedidos}" emptyMessage="Sem pedidos">
+							    <p:column headerText="Beb.">
 								    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('#{item.observacao}')">
-								         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.pedido.cliente}" title="#{item.pedido.cliente}" />
+								         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.produto.nome}" title="#{item.produto.nome}" />
 							        </div>
 							    </p:column>
 							    <p:column width="25px;" headerText="Loc.">
@@ -35,8 +32,8 @@
 							    </p:column>
 							    <p:column headerText="Status">
 							        <p:selectOneMenu id="produto" value="#{item.situacaoPedido}">
-							            <f:selectItems value="#{comidaListagemBean.situacoes}" />
-							            <f:ajax event="change" execute="@this" render="@form" listener="#{comidaListagemBean.atualizarItem(comida.id, item.id)}" />
+							            <f:selectItems value="#{bebidaListagemBean.situacoes}" />
+							            <f:ajax event="change" execute="@this" render="@form" listener="#{bebidaListagemBean.atualizarItem(pedido.id, item.id)}" />
 							        </p:selectOneMenu>
 							    </p:column>
 							</p:dataTable>
@@ -48,29 +45,29 @@
 			    <h:panelGroup id="camposEdicao">
 				    <h:panelGrid columns="2" style="margin-bottom:10px">
 				    	<p:outputLabel for="cliente" value="Cliente: " />
-						<p:inputText id="cliente" value="#{comidaListagemBean.clienteEdicao}" />
+						<p:inputText id="cliente" value="#{bebidaListagemBean.clienteEdicao}" />
 				    </h:panelGrid>
 	        		<h:panelGrid columns="2" style="margin-bottom:10px">
 				        <p:outputLabel for="quantidadeMesa" value="Quant. Local: " />
-		        		<p:spinner id="quantidadeMesa" value="#{comidaListagemBean.quantidadeLocalEdicao}" min="0" max="100" />
+		        		<p:spinner id="quantidadeMesa" value="#{bebidaListagemBean.quantidadeLocalEdicao}" min="0" max="100" />
 	    			</h:panelGrid>
 	        		<h:panelGrid columns="2" style="margin-bottom:10px">
 				        <p:outputLabel for="quantidadeViagem" value="Quant. Viagem: " />
-		        		<p:spinner id="quantidadeViagem" value="#{comidaListagemBean.quantidadeViagemEdicao}" min="0" max="100" />
+		        		<p:spinner id="quantidadeViagem" value="#{bebidaListagemBean.quantidadeViagemEdicao}" min="0" max="100" />
 	    			</h:panelGrid>
 	    			<h:panelGrid columns="2" style="margin-bottom:10px">
 				    	<p:outputLabel for="observacao" value="Observação: " />
-						<p:inputText id="observacao" value="#{comidaListagemBean.observacaoEdicao}" />
+						<p:inputText id="observacao" value="#{bebidaListagemBean.observacaoEdicao}" />
 				    </h:panelGrid>
 	    			<p:commandButton styleClass="button" id="salvarAlteracao" value="Salvar" style="margin-right: 10px;"> 
-						<f:ajax event="click" execute="camposEdicao" listener="#{comidaListagemBean.confirmarEdicao()}" render="@form" />
+						<f:ajax event="click" execute="camposEdicao" listener="#{bebidaListagemBean.confirmarEdicao()}" render="@form" />
 					</p:commandButton>
 					<p:commandButton styleClass="button" id="cancelarAlteracao" value="Cancelar"> 
-						<f:ajax event="click" listener="#{comidaListagemBean.cancelarEdicao()}" render="@form"/>
+						<f:ajax event="click" listener="#{bebidaListagemBean.cancelarEdicao()}" render="@form"/>
 					</p:commandButton>
 				</h:panelGroup>
 			</p:dialog> 
-			<h:panelGroup rendered="#{comidaListagemBean.editar}">
+			<h:panelGroup rendered="#{bebidaListagemBean.editar}">
 					<script type="text/javascript">
 					PF('modalQuant').show();
 					</script>
