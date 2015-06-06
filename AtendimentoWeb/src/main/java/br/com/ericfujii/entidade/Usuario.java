@@ -42,6 +42,12 @@ public class Usuario {
 	@XmlTransient
 	private String confirmacaoSenha;
 	
+	public Usuario(Integer id){
+		this.id = id;
+	}
+	
+	public Usuario(){}
+	
 	public Integer getId() {
 		return id;
 	}

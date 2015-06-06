@@ -1,4 +1,7 @@
 package br.com.ericfujii.bean;
+import br.com.ericfujii.entidade.Mensagem;
+import br.com.ericfujii.entidade.Usuario;
+import br.com.ericfujii.hibernate.HibernateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,10 +19,6 @@ import javax.faces.model.SelectItem;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import br.com.ericfujii.entidade.Mensagem;
-import br.com.ericfujii.entidade.Usuario;
-import br.com.ericfujii.hibernate.HibernateUtil;
 
 
 @ViewScoped
@@ -141,6 +140,14 @@ public class ChatBean {
 		this.usuarioBalcao = usuarioBalcao;
 	}
 
+	public String getTextoMensagem() {
+		return textoMensagem;
+	}
+
+	public void setTextoMensagem(String textoMensagem) {
+		this.textoMensagem = textoMensagem;
+	}
+
 	public List<SelectItem> getDestinatariosDisponiveis() {
 		return destinatariosDisponiveis;
 	}
@@ -165,15 +172,5 @@ public class ChatBean {
 	public void setMensagens(Map<Date, List<Mensagem>> mensagens) {
 		this.mensagens = mensagens;
 	}
-
-	public String getTextoMensagem() {
-		return textoMensagem;
-	}
-
-	public void setTextoMensagem(String textoMensagem) {
-		this.textoMensagem = textoMensagem;
-	}
-
-
 
 }

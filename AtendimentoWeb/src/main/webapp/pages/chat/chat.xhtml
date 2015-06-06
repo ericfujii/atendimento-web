@@ -15,6 +15,8 @@
 	<ui:include src="../../menu.xhtml" />
 	<div id="conteudo">
 		<h:form>
+		<p:commandButton value="Atualizar"
+		actionListener="#{chatBean.listaMensagens()}" process="@this" update="@form"/>
 			<p:panelGrid columns="1">
 				<p:panelGrid columns="2">
 					<p:outputLabel>Destinatários: </p:outputLabel>
