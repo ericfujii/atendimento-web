@@ -5,20 +5,25 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-import org.hibernate.Session;
 
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Produto;
-import br.com.ericfujii.hibernate.HibernateUtil;
+import br.com.ericfujii.servico.ItemPedidoServico;
+import br.com.ericfujii.servico.ProdutoServico;
 
 @ViewScoped
 @ManagedBean
 public class ComidaHistoricoBean {
 
+	@EJB
+	private ItemPedidoServico itemPedidoServico;
+	@EJB
+	private ProdutoServico produtoServico;
+	
 	private List<Produto> produtos;
 	private ESituacaoPedido[] situacoes = ESituacaoPedido.values();
 	private boolean editar = false;
@@ -42,12 +47,7 @@ public class ComidaHistoricoBean {
 		
 		editar = false;
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-    	session.update(itemPedidoEdicao);
-    	session.getTransaction().commit();
-    	session.close();
-    	
+		itemPedidoServico.alterar(itemPedidoEdicao);
     	atualizarTela();
 	}
 	
@@ -62,11 +62,7 @@ public class ComidaHistoricoBean {
 				for (ItemPedido itemPedido : produto.getItensPedidos()) {
 					if (itemPedido.getId().equals(idItem)) {
 						itemPedido.setDataHotaUltimaSituacao(Calendar.getInstance());
-						Session session = HibernateUtil.getSessionFactory().openSession();
-				        session.beginTransaction();
-			        	session.update(itemPedido);
-			        	session.getTransaction().commit();
-			        	session.close();
+						itemPedidoServico.alterar(itemPedido);
 			        	
 			        	if (itemPedido.getSituacaoPedido() == ESituacaoPedido.EDITAR) {
 			        		itemPedidoEdicao = itemPedido;
@@ -86,8 +82,7 @@ public class ComidaHistoricoBean {
 	}
 	
 	public void atualizarTela() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtos = (List<Produto>) session.createQuery("FROM Produto p JOIN FETCH p.produtoTipo pt WHERE pt.bebida = false ORDER BY p.ordem ").list();
+		produtos = produtoServico.obterComidas();
 		for (Produto produto : produtos) {
 			Integer contadorLocal = 0;
 			Integer contadorViagem = 0;

@@ -1,14 +1,5 @@
 package br.com.ericfujii.rest;
 
-import java.util.List;
-import org.hibernate.Session;
-import br.com.ericfujii.entidade.ItemPedido;
-import br.com.ericfujii.entidade.Pedido;
-import br.com.ericfujii.entidade.Produto;
-import br.com.ericfujii.entidade.ProdutoTipo;
-import br.com.ericfujii.entidade.Usuario;
-import br.com.ericfujii.hibernate.HibernateUtil;
-
 public class RestServico {
 	
 	private StringBuilder selectProdutos = new StringBuilder();
@@ -38,7 +29,7 @@ public class RestServico {
 		selectUsuarios.append("FROM ItemPedido ip ");
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<ProdutoTipo> obterProdutosTipos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		return session.createQuery(selectProdutosTipos.toString()).list();
@@ -66,5 +57,5 @@ public class RestServico {
 	public List<ItemPedido> obterItensPedidos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		return session.createQuery(selectItensPedidos.toString()).list();
-	}
+	}*/
 }

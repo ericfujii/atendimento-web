@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-import org.hibernate.Session;
 
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
-import br.com.ericfujii.hibernate.HibernateUtil;
+import br.com.ericfujii.servico.ItemPedidoServico;
+import br.com.ericfujii.servico.PedidoServico;
 
 @ViewScoped
 @ManagedBean
 public class BebidaListagemBean {
 
+	@EJB
+	private ItemPedidoServico itemPedidoServico;
+	@EJB
+	private PedidoServico pedidoServico;
+	
 	private List<Pedido> pedidos;
 	private ESituacaoPedido[] situacoes = ESituacaoPedido.values();
 	private boolean editar = false;
@@ -41,26 +46,17 @@ public class BebidaListagemBean {
 		
 		editar = false;
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-    	session.update(itemPedidoEdicao);
-    	session.getTransaction().commit();
-    	session.close();
-    	
+		itemPedidoServico.alterar(itemPedidoEdicao);
     	atualizarTela();
 	}
 	
 	public void enviarTodos(Integer idPedido) {
 		for (Pedido pedido : pedidos) {
 			if (pedido.getId().equals(idPedido)) {
-				Session session = HibernateUtil.getSessionFactory().openSession();
-		        session.beginTransaction();
 				for (ItemPedido itemPedido : pedido.getPedidos()) {
 					itemPedido.setSituacaoPedido(ESituacaoPedido.ENVIADO);
-		        	session.update(itemPedido);
+					itemPedidoServico.alterar(itemPedido);
 				}
-				session.getTransaction().commit();
-	        	session.close();
 	        	break;
 			}
 		}
@@ -77,11 +73,7 @@ public class BebidaListagemBean {
 			if (pedido.getId().equals(idPedido)) {
 				for (ItemPedido itemPedido : pedido.getPedidos()) {
 					if (itemPedido.getId().equals(idItem)) {
-						Session session = HibernateUtil.getSessionFactory().openSession();
-				        session.beginTransaction();
-			        	session.update(itemPedido);
-			        	session.getTransaction().commit();
-			        	session.close();
+						itemPedidoServico.alterar(itemPedido);
 			        	
 			        	if (itemPedido.getSituacaoPedido() == ESituacaoPedido.EDITAR) {
 			        		itemPedidoEdicao = itemPedido;
@@ -102,8 +94,7 @@ public class BebidaListagemBean {
 	
 	public void atualizarTela() {
 		pedidos = new ArrayList<Pedido>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		List<Pedido> pedidosTotal = (List<Pedido>) session.createQuery("FROM Pedido p ").list();
+		List<Pedido> pedidosTotal = pedidoServico.obterTodos();
 		
 		for (Pedido pedido : pedidosTotal) {
 			Pedido pedidoTemp = new Pedido();

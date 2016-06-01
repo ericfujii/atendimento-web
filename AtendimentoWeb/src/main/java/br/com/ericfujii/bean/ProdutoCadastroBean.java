@@ -1,17 +1,20 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.hibernate.Session;
+
 import br.com.ericfujii.entidade.ESituacao;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
-import br.com.ericfujii.hibernate.HibernateUtil;
+import br.com.ericfujii.servico.ProdutoServico;
+import br.com.ericfujii.servico.ProdutoTipoServico;
 
 @ViewScoped
 @ManagedBean
@@ -20,6 +23,10 @@ public class ProdutoCadastroBean {
 	private Produto 		  produto;
 	private List<ProdutoTipo> produtosTipos;
 	private List<Produto>     produtos;
+	@EJB
+	private ProdutoServico produtoServico;
+	@EJB
+	private ProdutoTipoServico produtoTipoServico;
 	
 	private StringBuilder selectProdutos = new StringBuilder();
 	{
@@ -44,13 +51,8 @@ public class ProdutoCadastroBean {
 		carregarProdutos();
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void carregarProdutos() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtos = (List<Produto>) session
-				.createQuery(selectProdutos.toString())
-				.list();
-		session.close();
+		produtos = produtoServico.obterTodos();
 	}
 
 	public void construirProduto() {
@@ -58,13 +60,8 @@ public class ProdutoCadastroBean {
 		produto.setProdutoTipo(new ProdutoTipo());
 	}
 
-	@SuppressWarnings("unchecked")
 	private void carregarProdutosTipos() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		produtosTipos = (List<ProdutoTipo>) session
-				.createQuery(selectprodutosTipos.toString())
-				.list();
-		session.close();
+		produtosTipos = produtoTipoServico.obterTodos();
 	}
 	
 	public void salvar() {
@@ -79,17 +76,13 @@ public class ProdutoCadastroBean {
 			return;
 		}
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
         if (produto.getId() == null) {
-        	session.save(produto);
+        	produtoServico.salvar(produto);
         	makeMessage(FacesMessage.SEVERITY_INFO, "Produto cadastrado com sucesso!", "");
         } else {
-        	session.update(produto);
+        	produtoServico.alterar(produto);
         	makeMessage(FacesMessage.SEVERITY_INFO, "Produto editado com sucesso!", "");
         }
-        session.getTransaction().commit();
-        session.close();
         construirProduto();
         carregarProdutos();
 	}
@@ -120,12 +113,8 @@ public class ProdutoCadastroBean {
 	}
 	
 	private void atualizar(Produto produto, String message) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.update(produto);
+		produtoServico.alterar(produto);
     	makeMessage(FacesMessage.SEVERITY_INFO, message, "");
-    	session.getTransaction().commit();
-    	session.close();
 	}
 
 	private void makeMessage(Severity severity, String message, String title) {

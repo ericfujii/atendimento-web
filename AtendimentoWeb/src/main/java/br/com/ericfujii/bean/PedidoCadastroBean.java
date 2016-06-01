@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -12,21 +13,27 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ETipoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
-import br.com.ericfujii.hibernate.HibernateUtil;
+import br.com.ericfujii.servico.PedidoServico;
+import br.com.ericfujii.servico.ProdutoServico;
+import br.com.ericfujii.servico.ProdutoTipoServico;
 
 @ViewScoped
 @ManagedBean
 public class PedidoCadastroBean {
 
+	@EJB
+	private PedidoServico pedidoServico;
+	@EJB
+	private ProdutoServico produtoServico;
+	@EJB
+	private ProdutoTipoServico produtoTipoServico;
+	
 	private Pedido pedido= new Pedido();
 	private Integer idProduto;
 	private ItemPedido itemPedido = new ItemPedido();
@@ -39,10 +46,7 @@ public class PedidoCadastroBean {
 	
 	@PostConstruct
 	public void postContruct() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Query q = session.createQuery("From ProdutoTipo ");
-        
-		List<ProdutoTipo> produtoTipos = q.list();
+		List<ProdutoTipo> produtoTipos = produtoTipoServico.obterTodos();
 		
 		for (ProdutoTipo produtoTipo : produtoTipos) {
 			SelectItemGroup group = new SelectItemGroup(produtoTipo.getNome());
@@ -66,10 +70,7 @@ public class PedidoCadastroBean {
 		if (idProduto == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Selecione um produto!", ""));
 		} else {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			Query q = session.createQuery("From ProdutoTipo ");
-			q = session.createQuery("FROM Produto p WHERE p.id = " + idProduto);
-			Produto produto = (Produto) q.uniqueResult();
+			Produto produto = produtoServico.obterPorId(idProduto);
 			itemPedido.setProduto(produto);
 			if (!edicao) {
 				itensAdicionados.add(itemPedido);
@@ -101,13 +102,8 @@ public class PedidoCadastroBean {
 			pedido.setTipoPedido(tipoPedido);
 			pedido.setDataHoraCadatro(calendar);
 			
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			  
-	        session.beginTransaction();
-	 
-	    	session.save(pedido);
+	    	pedidoServico.salvar(pedido);
 	    	
-	    	session.getTransaction().commit();
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido cadastrado com sucesso!", ""));
 		
 	    	pedido = new Pedido();

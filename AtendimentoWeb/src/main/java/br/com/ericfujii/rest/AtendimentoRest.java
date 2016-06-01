@@ -1,30 +1,20 @@
 package br.com.ericfujii.rest;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-
-import br.com.ericfujii.entidade.Usuario;
-import br.com.ericfujii.hibernate.HibernateUtil;
-
-@Path("/atendimentoRest")
+//@Path("/atendimentoRest")
 public class AtendimentoRest implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private RestServico restServico;
 		
-	@POST
+	/*@POST
 	@Path("processar")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -57,7 +47,7 @@ public class AtendimentoRest implements Serializable {
 			response = new ResponseAtendimentoRest(ECodigoResponse.ERROR, e.getMessage());
 		}
 		return Response.ok(response).build();
-	}
+	}*/
 	
 	@GET
     @Produces(MediaType.TEXT_PLAIN)

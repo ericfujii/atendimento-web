@@ -1,18 +1,8 @@
 package br.com.ericfujii.bean;
-import br.com.ericfujii.entidade.Mensagem;
-import br.com.ericfujii.entidade.Usuario;
-import br.com.ericfujii.hibernate.HibernateUtil;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
@@ -20,8 +10,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
+import br.com.ericfujii.entidade.Mensagem;
+import br.com.ericfujii.entidade.Usuario;
 
 
 @ViewScoped
@@ -39,7 +29,7 @@ public class ChatBean {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, title));
 	}
 
-	@PostConstruct
+	/*@PostConstruct
 	public void postConstruct(){
 		//Preenche lista de destinatarios
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -134,7 +124,7 @@ public class ChatBean {
 			session.close();
 		}
 	}
-	/* ***************** Getters & Setters *************************/
+	 ***************** Getters & Setters ************************
 
 	public Usuario getUsuarioBalcao() {
 		return usuarioBalcao;
@@ -176,5 +166,5 @@ public class ChatBean {
 	public void setMensagens(Map<Date, List<Mensagem>> mensagens) {
 		this.mensagens = mensagens;
 	}
-
+*/
 }

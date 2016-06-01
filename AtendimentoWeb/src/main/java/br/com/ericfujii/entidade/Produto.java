@@ -45,7 +45,7 @@ public class Produto {
 	@XmlElement(name = "situacao")
 	private ESituacao situacao = ESituacao.ATIVO;
 	
-	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "produto", fetch = FetchType.EAGER)
 	@XmlTransient
 	private List<ItemPedido> itensPedidos;
 	

@@ -1,20 +1,25 @@
 package br.com.ericfujii.bean;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.hibernate.Session;
+
 import br.com.ericfujii.entidade.ESituacao;
 import br.com.ericfujii.entidade.Usuario;
-import br.com.ericfujii.hibernate.HibernateUtil;
+import br.com.ericfujii.servico.UsuarioServico;
 
 @ViewScoped
 @ManagedBean
 public class UsuarioCadastroBean {
+	
+	@EJB
+	private UsuarioServico usuarioServico;
 
 	private Usuario usuario;
 	private List<Usuario> usuarios;
@@ -35,13 +40,8 @@ public class UsuarioCadastroBean {
 		this.usuario = new Usuario();
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void carregarUsuarios() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		usuarios = (List<Usuario>) session
-				.createQuery(selectUsuarios.toString())
-				.list();
-		session.close();
+		usuarios = usuarioServico.obterTodos();
 	}
 
 	public void salvar() {
@@ -50,20 +50,17 @@ public class UsuarioCadastroBean {
 			return;
 		}
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
         if (usuario.getId() == null) {
-        	session.save(usuario);
-        	makeMessage(FacesMessage.SEVERITY_INFO, "Usu√°rio " 
+        	usuarioServico.salvar(usuario);
+        	makeMessage(FacesMessage.SEVERITY_INFO, "Usu·rio " 
         											+ usuario.getNome() 
         											+ " cadastrado com sucesso!", "");
         } else {
-        	session.update(usuario);
-        	makeMessage(FacesMessage.SEVERITY_INFO, "Usu√°rio " 
+        	usuarioServico.alterar(usuario);
+        	makeMessage(FacesMessage.SEVERITY_INFO, "Usu·rio " 
         											+ usuario.getNome() 
         											+ " editado com sucesso!", "");
         }
-        session.getTransaction().commit();
         
         construirUsuario();
         carregarUsuarios();
@@ -127,12 +124,8 @@ public class UsuarioCadastroBean {
 	}
 	
 	private void atualizar(Usuario usuario, String message) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.update(usuario);
+		usuarioServico.alterar(usuario);
     	makeMessage(FacesMessage.SEVERITY_INFO, message, "");
-    	session.getTransaction().commit();
-    	session.close();
 	}
 	
 	private void makeMessage(Severity severity, String message, String title) {
