@@ -147,16 +147,11 @@
 			<version>9.4-1201-jdbc41</version>
 		</dependency>
 		
-        <dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-json</artifactId>
-		    <version>1.8</version>
-		</dependency>
-		
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.8</version>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>3.0.6.Final</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
   

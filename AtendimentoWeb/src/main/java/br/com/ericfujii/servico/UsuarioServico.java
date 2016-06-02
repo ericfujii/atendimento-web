@@ -23,4 +23,8 @@ public class UsuarioServico extends BaseServico<Usuario> {
 		setDao(usuarioDao);
 	}
 	
+	public Usuario efetuarLogin(String login, String senha) {
+		return usuarioDao.efetuarLogin(login, senha);
+	}
+	
 }
