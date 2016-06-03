@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -53,8 +52,7 @@ public class Pedido {
 	@XmlElement(name = "data_hora_cadastro")
 	private Calendar dataHoraCadatro;
 	
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@XmlTransient
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ItemPedido> pedidos;
 	
 	public Integer getId() {

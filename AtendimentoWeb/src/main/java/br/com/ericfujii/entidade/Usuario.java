@@ -31,7 +31,7 @@ public class Usuario {
 	@XmlElement(name = "login")
 	private String login;
 	
-	@XmlElement(name = "senha")
+	@XmlTransient
 	private String senha;
 	
 	@Enumerated(EnumType.STRING)

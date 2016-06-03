@@ -83,6 +83,7 @@
 			<script type="text/javascript">
 				var atualizacaoInterval;
 				function iniciarAtualizacao() {
+					clearInterval(atualizacaoInterval);
 					atualizacaoInterval = setInterval(
 						function() {
 							document.getElementById('atualizar').click();

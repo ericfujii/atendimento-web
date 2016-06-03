@@ -1,6 +1,7 @@
 package br.com.ericfujii.rest;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -11,9 +12,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.ericfujii.entidade.ESituacaoPedido;
+import br.com.ericfujii.entidade.ETipoPedido;
+import br.com.ericfujii.entidade.ItemPedido;
+import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.entidade.envio.MobileEnvioLogin;
+import br.com.ericfujii.entidade.envio.MobileEnvioPacote;
+import br.com.ericfujii.entidade.envio.MobileEnvioPedido;
 import br.com.ericfujii.entidade.retorno.MobileRetornoLogin;
+import br.com.ericfujii.entidade.retorno.MobileRetornoPacote;
+import br.com.ericfujii.entidade.retorno.MobileRetornoPedido;
 import br.com.ericfujii.servico.ItemPedidoServico;
 import br.com.ericfujii.servico.PedidoServico;
 import br.com.ericfujii.servico.ProdutoServico;
@@ -82,6 +91,47 @@ public class AtendimentoRest implements Serializable {
 		} else {
 			response.setCodigoRetorno(ECodigoResponse.OK.name());
 			response.setIdUsuario(usuario.getId());
+		}
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("verificarPacote")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response carregarPacotes(MobileEnvioPacote request) {
+		MobileRetornoPacote response = new MobileRetornoPacote();
+		response.setProdutos(produtoServico.obterTodos());
+		response.setProdutoTipos(produtoTipoServico.obterTodos());
+		response.setUsuarios(usuarioServico.obterTodos());
+		response.setCodigoRetorno(ECodigoResponse.OK.name());
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("salvarPedido")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response salvarPedido(MobileEnvioPedido request) {
+		MobileRetornoPedido response = new MobileRetornoPedido();
+		try {
+			Pedido pedido = request.getPedido();
+			pedido.setDataHoraCadatro(Calendar.getInstance());
+			pedido.setTipoPedido(ETipoPedido.MESA);
+			pedido.setUsuario(usuarioServico.obterPorId(request.getIdUsuario()));
+			
+			for (ItemPedido itemPedido : pedido.getPedidos()) {
+				itemPedido.setPedido(pedido);
+				itemPedido.setSituacaoPedido(ESituacaoPedido.NOVO);
+				itemPedido.setDataHotaUltimaSituacao(Calendar.getInstance());
+				itemPedido.setViagem(itemPedido.getQuantidadeViagem() != null && itemPedido.getQuantidadeViagem()> 0);
+			}
+			
+			pedidoServico.salvar(pedido);
+			
+			response.setCodigoRetorno(ECodigoResponse.OK.name());
+		} catch (Exception e) {
+			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
 		}
 		return Response.ok(response).build();
 	}
