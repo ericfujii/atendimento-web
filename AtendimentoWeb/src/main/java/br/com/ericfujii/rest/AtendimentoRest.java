@@ -2,6 +2,7 @@ package br.com.ericfujii.rest;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -17,9 +18,11 @@ import br.com.ericfujii.entidade.ETipoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Usuario;
+import br.com.ericfujii.entidade.envio.MobileEnvioFila;
 import br.com.ericfujii.entidade.envio.MobileEnvioLogin;
 import br.com.ericfujii.entidade.envio.MobileEnvioPacote;
 import br.com.ericfujii.entidade.envio.MobileEnvioPedido;
+import br.com.ericfujii.entidade.retorno.MobileRetornoFila;
 import br.com.ericfujii.entidade.retorno.MobileRetornoLogin;
 import br.com.ericfujii.entidade.retorno.MobileRetornoPacote;
 import br.com.ericfujii.entidade.retorno.MobileRetornoPedido;
@@ -129,6 +132,28 @@ public class AtendimentoRest implements Serializable {
 			
 			pedidoServico.salvar(pedido);
 			
+			response.setCodigoRetorno(ECodigoResponse.OK.name());
+		} catch (Exception e) {
+			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
+		}
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("recuperarFila")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response recuperarFila(MobileEnvioFila request) {
+		MobileRetornoFila response = new MobileRetornoFila();
+		try {
+			List<ItemPedido> itensPedidos = itemPedidoServico.obterFilaProduto(request.getProduto());
+			for (ItemPedido itemPedido : itensPedidos) {
+				itemPedido.getProduto().setItensPedidos(null);
+				itemPedido.getPedido().setPedidos(null);
+				itemPedido.getProduto().setProdutoTipo(null);
+				itemPedido.getPedido().setUsuario(null);
+			}
+			response.setItensPedidos(itensPedidos);
 			response.setCodigoRetorno(ECodigoResponse.OK.name());
 		} catch (Exception e) {
 			response.setCodigoRetorno(ECodigoResponse.ERROR.name());

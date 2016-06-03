@@ -1,5 +1,7 @@
 package br.com.ericfujii.servico;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,4 +25,7 @@ public class PedidoServico extends BaseServico<Pedido> {
 		setDao(pedidoDAO);
 	}
 	
+	public List<Pedido> obterPedidosBebida() {
+		return pedidoDAO.consultarPedidosBebidas();
+	}
 }

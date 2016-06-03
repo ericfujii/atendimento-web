@@ -33,7 +33,7 @@ public class Produto {
 	@XmlElement(name = "nome")
 	private String nome;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_produto_tipo")
 	@XmlElement(name = "produto_tipo")
 	private ProdutoTipo produtoTipo;
@@ -45,7 +45,7 @@ public class Produto {
 	@XmlElement(name = "situacao")
 	private ESituacao situacao = ESituacao.ATIVO;
 	
-	@OneToMany(mappedBy = "produto", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
 	@XmlTransient
 	private List<ItemPedido> itensPedidos;
 	

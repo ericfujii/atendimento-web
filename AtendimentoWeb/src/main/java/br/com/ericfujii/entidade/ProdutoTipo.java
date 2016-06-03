@@ -38,7 +38,7 @@ public class ProdutoTipo {
 	private ESituacao situacao = ESituacao.ATIVO;
 	
 	@XmlTransient
-	@OneToMany(mappedBy = "produtoTipo", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "produtoTipo", fetch = FetchType.LAZY)
 	private List<Produto> produtos;
 	
 	public Integer getId() {

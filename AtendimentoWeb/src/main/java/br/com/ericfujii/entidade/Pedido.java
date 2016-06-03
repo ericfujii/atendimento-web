@@ -42,7 +42,7 @@ public class Pedido {
 	@XmlElement(name = "tipo_pedido")
 	private ETipoPedido tipoPedido;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_usuario")
 	@XmlElement(name = "usuario")
 	private Usuario usuario;
@@ -52,7 +52,7 @@ public class Pedido {
 	@XmlElement(name = "data_hora_cadastro")
 	private Calendar dataHoraCadatro;
 	
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ItemPedido> pedidos;
 	
 	public Integer getId() {

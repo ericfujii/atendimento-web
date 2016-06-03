@@ -94,7 +94,7 @@ public class BebidaListagemBean {
 	
 	public void atualizarTela() {
 		pedidos = new ArrayList<Pedido>();
-		List<Pedido> pedidosTotal = pedidoServico.obterTodos();
+		List<Pedido> pedidosTotal = pedidoServico.obterPedidosBebida();
 		
 		for (Pedido pedido : pedidosTotal) {
 			Pedido pedidoTemp = new Pedido();
