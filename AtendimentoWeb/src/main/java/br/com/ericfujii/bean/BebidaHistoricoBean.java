@@ -81,7 +81,7 @@ public class BebidaHistoricoBean {
 	
 	public void atualizarTela() {
 		pedidos = new ArrayList<Pedido>();
-		List<Pedido> pedidosTotal = pedidoServico.obterTodos("dataHoraCadatro");
+		List<Pedido> pedidosTotal = pedidoServico.obterPedidosBebida("DESC");
 		
 		for (Pedido pedido : pedidosTotal) {
 			Pedido pedidoTemp = new Pedido();

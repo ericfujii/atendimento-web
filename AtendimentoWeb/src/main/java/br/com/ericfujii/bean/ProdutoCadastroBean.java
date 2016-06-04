@@ -52,7 +52,7 @@ public class ProdutoCadastroBean {
 	}
 	
 	private void carregarProdutos() {
-		produtos = produtoServico.obterTodos();
+		produtos = produtoServico.obterTodosCompleto();
 	}
 
 	public void construirProduto() {

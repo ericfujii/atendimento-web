@@ -55,6 +55,13 @@ public class Pedido {
 	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ItemPedido> pedidos;
 	
+	public Pedido() {
+	}
+	
+	public Pedido(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

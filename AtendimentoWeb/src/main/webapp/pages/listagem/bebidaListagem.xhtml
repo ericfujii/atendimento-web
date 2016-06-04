@@ -24,7 +24,6 @@
 							<p:fieldset legend="#{pedido.cliente}" >
 								<h:panelGrid columns="2" style="margin-bottom:10px">
 									<p:commandButton style="float: right;" styleClass="button" value="Enviar Todos"> 
-										<p:confirm header="Confirmação" message="Deseja realmente enviar todos?" icon="ui-icon-alert" />
 										<f:ajax event="click" listener="#{bebidaListagemBean.enviarTodos(pedido.id)}" render="bebidas" />
 									</p:commandButton>
 								</h:panelGrid>

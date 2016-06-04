@@ -25,7 +25,7 @@ public class PedidoServico extends BaseServico<Pedido> {
 		setDao(pedidoDAO);
 	}
 	
-	public List<Pedido> obterPedidosBebida() {
-		return pedidoDAO.consultarPedidosBebidas();
+	public List<Pedido> obterPedidosBebida(String ordem) {
+		return pedidoDAO.consultarPedidosBebidas(ordem);
 	}
 }

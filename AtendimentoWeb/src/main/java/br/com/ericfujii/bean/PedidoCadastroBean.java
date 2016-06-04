@@ -46,7 +46,7 @@ public class PedidoCadastroBean {
 	
 	@PostConstruct
 	public void postContruct() {
-		List<ProdutoTipo> produtoTipos = produtoTipoServico.obterTodos();
+		List<ProdutoTipo> produtoTipos = produtoTipoServico.obterTodosCompleto();
 		
 		for (ProdutoTipo produtoTipo : produtoTipos) {
 			SelectItemGroup group = new SelectItemGroup(produtoTipo.getNome());
@@ -120,7 +120,7 @@ public class PedidoCadastroBean {
 			labelCliente = "Nome Cliente :";
 			break;
 		case MESA:
-			labelCliente = "Núm. Mesa :";
+			labelCliente = "Num. Mesa :";
 			break;
 		default:
 			break;

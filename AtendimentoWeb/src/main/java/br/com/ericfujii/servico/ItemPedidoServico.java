@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import br.com.ericfujii.dao.ItemPedidoDAO;
 import br.com.ericfujii.entidade.ItemPedido;
+import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 
 @Stateless
@@ -28,5 +29,9 @@ public class ItemPedidoServico extends BaseServico<ItemPedido> {
 
 	public List<ItemPedido> obterFilaProduto(Produto produto) {
 		return itemPedidoDAO.consultarFilaProduto(produto);
+	}
+	
+	public List<ItemPedido> obterFilaPedido(Pedido pedido) {
+		return itemPedidoDAO.consultarPorPedido(pedido);
 	}
 }

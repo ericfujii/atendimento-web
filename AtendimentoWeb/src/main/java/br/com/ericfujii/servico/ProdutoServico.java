@@ -29,4 +29,8 @@ public class ProdutoServico extends BaseServico<Produto> {
 		return produtoDAO.consultarComidas();
 	}
 	
+	public List<Produto> obterTodosCompleto() {
+		return produtoDAO.consultarTodosCompleto();
+	}
+	
 }

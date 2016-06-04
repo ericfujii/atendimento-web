@@ -27,7 +27,7 @@
 								<p:outputLabel value="Total: #{comida.pendentesTotal}"  style="margin-right: 10px;"  />
 								<p:dataTable var="item" value="#{comida.itensPedidos}" emptyMessage="Sem pedidos">
 								    <p:column headerText="Cli.">
-									    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('#{item.observacao}')">
+									    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('Feito por #{item.pedido.usuario.nome}\nObservações: #{item.observacao}')">
 									         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.pedido.cliente}" title="#{item.pedido.cliente}" />
 								        </div>
 								    </p:column>

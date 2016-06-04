@@ -1,5 +1,6 @@
 package br.com.ericfujii.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DataUtil {
@@ -10,5 +11,10 @@ public class DataUtil {
 		}
 		return ((dataHorarioFim.getTimeInMillis() - dataHorarioInicio.getTimeInMillis()) 
 				/ 1000);
+	}
+	
+	public static String formatarData(Calendar calendar) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		return dateFormat.format(calendar.getTime());
 	}
 }

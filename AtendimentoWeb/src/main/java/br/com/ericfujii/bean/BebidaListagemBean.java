@@ -51,13 +51,11 @@ public class BebidaListagemBean {
 	}
 	
 	public void enviarTodos(Integer idPedido) {
-		for (Pedido pedido : pedidos) {
-			if (pedido.getId().equals(idPedido)) {
-				for (ItemPedido itemPedido : pedido.getPedidos()) {
-					itemPedido.setSituacaoPedido(ESituacaoPedido.ENVIADO);
-					itemPedidoServico.alterar(itemPedido);
-				}
-	        	break;
+		List<ItemPedido> itens = itemPedidoServico.obterFilaPedido(new Pedido(idPedido));
+		for (ItemPedido itemPedido : itens) {
+			if (itemPedido.getProduto().getProdutoTipo().getBebida()) {
+				itemPedido.setSituacaoPedido(ESituacaoPedido.FINALIZADO);
+				itemPedidoServico.alterar(itemPedido);
 			}
 		}
 		atualizarTela();
@@ -94,7 +92,7 @@ public class BebidaListagemBean {
 	
 	public void atualizarTela() {
 		pedidos = new ArrayList<Pedido>();
-		List<Pedido> pedidosTotal = pedidoServico.obterPedidosBebida();
+		List<Pedido> pedidosTotal = pedidoServico.obterPedidosBebida("ASC");
 		
 		for (Pedido pedido : pedidosTotal) {
 			Pedido pedidoTemp = new Pedido();

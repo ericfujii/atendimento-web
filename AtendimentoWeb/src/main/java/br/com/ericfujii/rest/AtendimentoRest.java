@@ -16,17 +16,25 @@ import javax.ws.rs.core.Response;
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ETipoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
+import br.com.ericfujii.entidade.Mensagem;
 import br.com.ericfujii.entidade.Pedido;
+import br.com.ericfujii.entidade.Produto;
+import br.com.ericfujii.entidade.ProdutoTipo;
 import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.entidade.envio.MobileEnvioFila;
 import br.com.ericfujii.entidade.envio.MobileEnvioLogin;
+import br.com.ericfujii.entidade.envio.MobileEnvioMensagem;
 import br.com.ericfujii.entidade.envio.MobileEnvioPacote;
 import br.com.ericfujii.entidade.envio.MobileEnvioPedido;
+import br.com.ericfujii.entidade.envio.MobileEnvioVerificarMensagens;
 import br.com.ericfujii.entidade.retorno.MobileRetornoFila;
 import br.com.ericfujii.entidade.retorno.MobileRetornoLogin;
+import br.com.ericfujii.entidade.retorno.MobileRetornoMensagem;
 import br.com.ericfujii.entidade.retorno.MobileRetornoPacote;
 import br.com.ericfujii.entidade.retorno.MobileRetornoPedido;
+import br.com.ericfujii.entidade.retorno.MobileRetornoVerificarMensagens;
 import br.com.ericfujii.servico.ItemPedidoServico;
+import br.com.ericfujii.servico.MensagemServico;
 import br.com.ericfujii.servico.PedidoServico;
 import br.com.ericfujii.servico.ProdutoServico;
 import br.com.ericfujii.servico.ProdutoTipoServico;
@@ -47,7 +55,8 @@ public class AtendimentoRest implements Serializable {
 	private ItemPedidoServico itemPedidoServico;
 	@EJB
 	private UsuarioServico usuarioServico;
-	
+	@EJB
+	private MensagemServico mensagemServico;
 		
 	@POST
 	@Path("processar")
@@ -104,8 +113,14 @@ public class AtendimentoRest implements Serializable {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response carregarPacotes(MobileEnvioPacote request) {
 		MobileRetornoPacote response = new MobileRetornoPacote();
-		response.setProdutos(produtoServico.obterTodos());
+		response.setProdutos(produtoServico.obterTodosCompleto());
+		for (Produto produto : response.getProdutos()) {
+			produto.setItensPedidos(null);
+		}
 		response.setProdutoTipos(produtoTipoServico.obterTodos());
+		for (ProdutoTipo produtoTipo : response.getProdutoTipos()) {
+			produtoTipo.setProdutos(null);
+		}
 		response.setUsuarios(usuarioServico.obterTodos());
 		response.setCodigoRetorno(ECodigoResponse.OK.name());
 		return Response.ok(response).build();
@@ -154,6 +169,42 @@ public class AtendimentoRest implements Serializable {
 				itemPedido.getPedido().setUsuario(null);
 			}
 			response.setItensPedidos(itensPedidos);
+			response.setCodigoRetorno(ECodigoResponse.OK.name());
+		} catch (Exception e) {
+			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
+		}
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("verificarMensagens")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response verificarMensagens(MobileEnvioVerificarMensagens request) {
+		MobileRetornoVerificarMensagens response = new MobileRetornoVerificarMensagens();
+		try {
+			response.setMensagens(mensagemServico.obterPorDestinatario(new Usuario(request.getIdUsuario())));
+			for (Mensagem mensagem : response.getMensagens()) {
+				mensagem.setEnviada(true);
+				mensagemServico.alterar(mensagem);
+			}
+			response.setCodigoRetorno(ECodigoResponse.OK.name());
+		} catch (Exception e) {
+			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
+		}
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("enviarMensagem")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response enviarMensagem(MobileEnvioMensagem request) {
+		MobileRetornoMensagem response = new MobileRetornoMensagem();
+		try {
+			request.getMensagem().setDataMensagem(Calendar.getInstance());
+			response.setHoraMensagem(request.getMensagem().getDataMensagem());
+			response.setIdMensagem(mensagemServico.salvar(request.getMensagem()).getId());
 			response.setCodigoRetorno(ECodigoResponse.OK.name());
 		} catch (Exception e) {
 			response.setCodigoRetorno(ECodigoResponse.ERROR.name());

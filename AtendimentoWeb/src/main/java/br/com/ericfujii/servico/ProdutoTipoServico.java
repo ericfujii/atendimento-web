@@ -1,5 +1,7 @@
 package br.com.ericfujii.servico;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,6 +25,8 @@ public class ProdutoTipoServico extends BaseServico<ProdutoTipo> {
 		setDao(produtoTipoDAO);
 	}
 	
-	
+	public List<ProdutoTipo> obterTodosCompleto() {
+		return produtoTipoDAO.consultarTodosCompleto();
+	}
 	
 }

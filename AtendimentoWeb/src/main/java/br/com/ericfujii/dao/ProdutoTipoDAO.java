@@ -1,5 +1,7 @@
 package br.com.ericfujii.dao;
 
+import java.util.List;
+
 import br.com.ericfujii.entidade.ProdutoTipo;
 
 public class ProdutoTipoDAO extends BaseDAO<ProdutoTipo> {
@@ -11,5 +13,14 @@ public class ProdutoTipoDAO extends BaseDAO<ProdutoTipo> {
 
 	public ProdutoTipoDAO() {
 		super(ProdutoTipo.class);
+	}
+	
+	public List<ProdutoTipo> consultarTodosCompleto() {
+		StringBuilder sql = new StringBuilder("SELECT DISTINCT pt ");
+		sql.append("FROM ProdutoTipo pt ");
+		sql.append("JOIN FETCH pt.produtos prod ");
+		
+		return getEm().createQuery(sql.toString(), ProdutoTipo.class)
+			.getResultList();
 	}
 }

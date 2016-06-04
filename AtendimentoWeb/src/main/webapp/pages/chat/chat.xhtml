@@ -11,8 +11,8 @@
 		href="/AtendimentoWeb/faces/style/principal.css" />
 	<script type="text/javascript">
 		function bottom(){
-			document.getElementById('formChat:mensagem_mensagens').scrollTop = 
-				document.getElementById('formChat:mensagem_mensagens').scrollHeight;
+			document.getElementById('mensagem_mensagens').scrollTop = 
+				document.getElementById('mensagem_mensagens').scrollHeight;
 			}
 		</script>
 </h:head>
@@ -20,16 +20,17 @@
 <body>
 	<ui:include src="../../menu.xhtml" />
 	<div id="conteudo">
-		<h:form id="formChat">
-			<p:commandButton value="Atualizar"
+		<h:form id="formChat" prependId="false">
+			<p:commandButton value="Atualizar" id="atualizar"
 				actionListener="#{chatBean.listaMensagens()}" process="@this"
-				update="@form" oncomplete="bottom();"/>
+				update="mensagem_mensagens" oncomplete="bottom();"/>
 			<h:panelGrid columns="1" styleClass="chat">
 				<h:panelGrid columns="2">
 					<p:outputLabel>Destinatários: </p:outputLabel>
 					<p:selectManyMenu value="#{chatBean.destinatariosSelecionados}"
 						converter="javax.faces.Integer">
 						<f:selectItems value="#{chatBean.destinatariosDisponiveis}" />
+						<f:ajax execute="@this" />
 					</p:selectManyMenu>
 				</h:panelGrid>
 
@@ -39,12 +40,10 @@
 					styleClass="scroll">
 					<h:panelGrid columns="1">
 						<h:panelGroup>
-							<p:outputLabel value="#{m.key}" styleClass="mensagem_data">
-								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss" />
-							</p:outputLabel>
+							<p:outputLabel value="#{m.key}" styleClass="mensagem_data" />
 							<p:outputLabel
 								title="Enviado para: #{chatBean.retornaDestinoMensagens(m.value)}"
-								value="#{m.value.get(0).remetente.nome}" />
+								value="#{m.value.get(0).remetente.nome} para #{chatBean.retornaDestinoMensagens(m.value)}" />
 						</h:panelGroup>
 
 						<p:outputLabel value="#{m.value.get(0).mensagem}"
@@ -62,6 +61,24 @@
 						 oncomplete="bottom();"/>
 				</h:panelGrid>
 			</h:panelGrid>
+			<script type="text/javascript">
+				var atualizacaoInterval;
+				function iniciarAtualizacao() {
+					clearInterval(atualizacaoInterval);
+					atualizacaoInterval = setInterval(
+						function() {
+							document.getElementById('atualizar').click();
+							}, 5000);
+				}
+				function pararAtualizacao() {
+					clearInterval(atualizacaoInterval);
+				}
+				$(document).ready(
+					function() {
+						iniciarAtualizacao();
+					}
+				);
+			</script>
 		</h:form>
 	</div>
 </body>
