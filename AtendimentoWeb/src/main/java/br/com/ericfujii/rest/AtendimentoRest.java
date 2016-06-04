@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.ericfujii.entidade.EAcaoPedido;
 import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.ETipoPedido;
 import br.com.ericfujii.entidade.ItemPedido;
@@ -21,12 +22,14 @@ import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
 import br.com.ericfujii.entidade.Usuario;
+import br.com.ericfujii.entidade.envio.MobileEnvioAlterarCancelarPedido;
 import br.com.ericfujii.entidade.envio.MobileEnvioFila;
 import br.com.ericfujii.entidade.envio.MobileEnvioLogin;
 import br.com.ericfujii.entidade.envio.MobileEnvioMensagem;
 import br.com.ericfujii.entidade.envio.MobileEnvioPacote;
 import br.com.ericfujii.entidade.envio.MobileEnvioPedido;
 import br.com.ericfujii.entidade.envio.MobileEnvioVerificarMensagens;
+import br.com.ericfujii.entidade.retorno.MobileRetornoAlterarCancelarPedido;
 import br.com.ericfujii.entidade.retorno.MobileRetornoFila;
 import br.com.ericfujii.entidade.retorno.MobileRetornoLogin;
 import br.com.ericfujii.entidade.retorno.MobileRetornoMensagem;
@@ -205,6 +208,25 @@ public class AtendimentoRest implements Serializable {
 			request.getMensagem().setDataMensagem(Calendar.getInstance());
 			response.setHoraMensagem(request.getMensagem().getDataMensagem());
 			response.setIdMensagem(mensagemServico.salvar(request.getMensagem()).getId());
+			response.setCodigoRetorno(ECodigoResponse.OK.name());
+		} catch (Exception e) {
+			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
+		}
+		return Response.ok(response).build();
+	}
+	
+	@POST
+	@Path("alterarCancelarPedido")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response alterarCancelarPedido(MobileEnvioAlterarCancelarPedido request) {
+		MobileRetornoAlterarCancelarPedido response = new MobileRetornoAlterarCancelarPedido();
+		try {
+			if (request.getAcaoPedido() == EAcaoPedido.CANCELAR) {
+				ItemPedido itemPedido = itemPedidoServico.obterPorId(request.getItemPedido().getId());
+				itemPedido.setSituacaoPedido(ESituacaoPedido.CANCELADO);
+				itemPedidoServico.alterar(itemPedido);
+			}
 			response.setCodigoRetorno(ECodigoResponse.OK.name());
 		} catch (Exception e) {
 			response.setCodigoRetorno(ECodigoResponse.ERROR.name());
