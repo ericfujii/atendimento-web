@@ -2,6 +2,7 @@ package br.com.ericfujii.dao;
 
 import java.util.List;
 
+import br.com.ericfujii.entidade.ESituacaoPedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
 
@@ -33,9 +34,10 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 		sql.append("JOIN FETCH ip.pedido ped ");
 		sql.append("JOIN FETCH ped.usuario us ");
 		sql.append("JOIN FETCH p.produtoTipo pt ");
-		sql.append("WHERE pt.bebida = false ORDER BY p.ordem, ped.dataHoraCadatro ASC ");
+		sql.append("WHERE pt.bebida = false AND ip.situacaoPedido !=:_situacao ORDER BY p.ordem, ped.dataHoraCadatro ASC ");
 		
 		return getEm().createQuery(sql.toString(), Produto.class)
+				.setParameter("_situacao", ESituacaoPedido.FINALIZADO)
 		.getResultList();
 	}
 	

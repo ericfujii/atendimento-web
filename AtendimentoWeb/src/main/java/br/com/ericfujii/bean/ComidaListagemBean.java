@@ -106,7 +106,7 @@ public class ComidaListagemBean {
 					contadorLocal += itemPedido.getQuantidadeMesa() ;
 					contadorViagem += itemPedido.getQuantidadeViagem();
 					contadorTotal += (itemPedido.getQuantidadeMesa() + itemPedido.getQuantidadeViagem());
-				} else if (itemPedido.getSituacaoPedido() != ESituacaoPedido.CANCELADO){
+				} else if (itemPedido.getSituacaoPedido() != ESituacaoPedido.CANCELADO && itemPedido.getSituacaoPedido() != ESituacaoPedido.ENVIADO){
 					if (DataUtil.calcularDiferencaSegundos(itemPedido.getDataHotaUltimaSituacao(), Calendar.getInstance()) > 20) {
 						remover.add(itemPedido);
 					}

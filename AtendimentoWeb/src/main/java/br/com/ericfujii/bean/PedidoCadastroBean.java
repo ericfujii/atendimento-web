@@ -19,9 +19,11 @@ import br.com.ericfujii.entidade.ItemPedido;
 import br.com.ericfujii.entidade.Pedido;
 import br.com.ericfujii.entidade.Produto;
 import br.com.ericfujii.entidade.ProdutoTipo;
+import br.com.ericfujii.entidade.Usuario;
 import br.com.ericfujii.servico.PedidoServico;
 import br.com.ericfujii.servico.ProdutoServico;
 import br.com.ericfujii.servico.ProdutoTipoServico;
+import br.com.ericfujii.servico.UsuarioServico;
 
 @ViewScoped
 @ManagedBean
@@ -33,6 +35,8 @@ public class PedidoCadastroBean {
 	private ProdutoServico produtoServico;
 	@EJB
 	private ProdutoTipoServico produtoTipoServico;
+	@EJB
+	private UsuarioServico usuarioServico;
 	
 	private Pedido pedido= new Pedido();
 	private Integer idProduto;
@@ -42,11 +46,13 @@ public class PedidoCadastroBean {
 	private ETipoPedido tipoPedido = ETipoPedido.BALCAO;
 	private String labelCliente = "Nome Cliente :";
 	private List<ItemPedido> itensAdicionados = new ArrayList<ItemPedido>();
+	private Usuario usuarioBalcao;
 	private boolean edicao = false;
 	
 	@PostConstruct
 	public void postContruct() {
 		List<ProdutoTipo> produtoTipos = produtoTipoServico.obterTodosCompleto();
+		usuarioBalcao = usuarioServico.obterPorId(1);
 		
 		for (ProdutoTipo produtoTipo : produtoTipos) {
 			SelectItemGroup group = new SelectItemGroup(produtoTipo.getNome());
@@ -101,6 +107,7 @@ public class PedidoCadastroBean {
 			pedido.setPedidos(itensAdicionados);
 			pedido.setTipoPedido(tipoPedido);
 			pedido.setDataHoraCadatro(calendar);
+			pedido.setUsuario(usuarioBalcao);
 			
 	    	pedidoServico.salvar(pedido);
 	    	
