@@ -40,7 +40,7 @@ public class ProdutoTipoCadastroBean {
         	+ produtoTipo.getNome() 
         	+ " cadastrado com sucesso!", ""));
         } else {
-        	produtoTipoServico.salvar(produtoTipo);
+        	produtoTipoServico.alterar(produtoTipo);
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de produto " 
         	+ produtoTipo.getNome() 
         	+ " editado com sucesso!", ""));

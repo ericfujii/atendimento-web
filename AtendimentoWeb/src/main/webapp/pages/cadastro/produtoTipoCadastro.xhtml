@@ -29,6 +29,10 @@
 							<p:inputText id="nome" value="#{produtoTipoCadastroBean.produtoTipo.nome}" />
 						</h:panelGrid>
 						<h:panelGrid columns="2" style="margin-bottom:10px">
+							<h:outputText for="ordem" value="Ordem :" />
+							<p:inputText id="ordem" value="#{produtoTipoCadastroBean.produtoTipo.ordem}" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" style="margin-bottom:10px">
 			    			<p:outputLabel for="bebida" value="Bebida? " />
 			        		<p:selectBooleanCheckbox id="bebida" value="#{produtoTipoCadastroBean.produtoTipo.bebida}" />
 		        		</h:panelGrid>
@@ -57,6 +61,10 @@
 					 
 					    <p:column headerText="Nome">
 					        <h:outputText value="#{tipo.nome}" />
+					    </p:column>
+					    
+					    <p:column headerText="Ordem">
+					        <h:outputText value="#{tipo.ordem}" />
 					    </p:column>
 					    
 					    <p:column headerText="Bebida">

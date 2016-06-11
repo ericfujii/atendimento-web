@@ -37,6 +37,9 @@ public class ProdutoTipo {
 	@XmlElement(name="situacao")
 	private ESituacao situacao = ESituacao.ATIVO;
 	
+	@XmlElement(name = "ordem")
+	private Integer ordem;
+	
 	@XmlTransient
 	@OneToMany(mappedBy = "produtoTipo", fetch = FetchType.LAZY)
 	private List<Produto> produtos;
@@ -70,5 +73,11 @@ public class ProdutoTipo {
 	}
 	public void setBebida(Boolean bebida) {
 		this.bebida = bebida;
+	}
+	public Integer getOrdem() {
+		return ordem;
+	}
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 }
