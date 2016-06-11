@@ -82,7 +82,7 @@ public class ComidaHistoricoBean {
 	}
 	
 	public void atualizarTela() {
-		produtos = produtoServico.obterComidas();
+		produtos = produtoServico.obterHistoricoComidas();
 		for (Produto produto : produtos) {
 			Integer contadorLocal = 0;
 			Integer contadorViagem = 0;

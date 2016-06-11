@@ -29,6 +29,10 @@ public class ProdutoServico extends BaseServico<Produto> {
 		return produtoDAO.consultarComidas();
 	}
 	
+	public List<Produto> obterHistoricoComidas() {
+		return produtoDAO.consultarHistoricoComidas();
+	}
+	
 	public List<Produto> obterTodosCompleto() {
 		return produtoDAO.consultarTodosCompleto();
 	}

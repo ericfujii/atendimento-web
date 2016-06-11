@@ -38,10 +38,10 @@
 								        <h:outputText value="#{item.quantidadeViagem}" />
 								    </p:column>
 								    <p:column headerText="Status">
-								        <p:selectOneListbox style="font-size:11px" onchange="pararAtualizacao();" id="produto" value="#{item.situacaoPedido}">
+								        <p:selectOneMenu style="font-size:11px" onchange="pararAtualizacao();" id="produto" value="#{item.situacaoPedido}">
 								            <f:selectItems value="#{comidaListagemBean.situacoes}" />
 								            <f:ajax event="change" execute="@this" render="@form" listener="#{comidaListagemBean.atualizarItem(comida.id, item.id)}" />
-								        </p:selectOneListbox>
+								        </p:selectOneMenu>
 								    </p:column>
 								</p:dataTable>
 							</p:fieldset>
@@ -87,7 +87,7 @@
 					atualizacaoInterval = setInterval(
 						function() {
 							document.getElementById('atualizar').click();
-							}, 10000);
+							}, 20000);
 				}
 				function pararAtualizacao() {
 					clearInterval(atualizacaoInterval);
