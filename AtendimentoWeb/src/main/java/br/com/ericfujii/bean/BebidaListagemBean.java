@@ -100,7 +100,7 @@ public class BebidaListagemBean {
 			List<ItemPedido> itens = pedido.getPedidos();
 			for (ItemPedido itemPedido : itens) {
 				if (itemPedido.getProduto().getProdutoTipo().getBebida() 
-						&& itemPedido.getSituacaoPedido() != ESituacaoPedido.ENVIADO
+//						&& itemPedido.getSituacaoPedido() != ESituacaoPedido.ENVIADO
 						&& itemPedido.getSituacaoPedido() != ESituacaoPedido.FINALIZADO) {
 					pedidoTemp.getPedidos().add(itemPedido);
 				}

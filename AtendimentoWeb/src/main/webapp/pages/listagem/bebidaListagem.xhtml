@@ -19,36 +19,41 @@
 			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			<h:panelGroup id="bebidas">
 				<div class="divPai">
-					<c:forEach var="pedido" items="#{bebidaListagemBean.pedidos}">
-						<div class="divFilha">
-							<p:fieldset legend="#{pedido.cliente}" >
-								<h:panelGrid columns="2" style="margin-bottom:10px">
-									<p:commandButton style="float: right;" styleClass="button" value="Enviar Todos"> 
-										<f:ajax event="click" listener="#{bebidaListagemBean.enviarTodos(pedido.id)}" render="bebidas" />
-									</p:commandButton>
-								</h:panelGrid>
-								<p:dataTable var="item" value="#{pedido.pedidos}" emptyMessage="Sem pedidos">
-								    <p:column headerText="Beb.">
-									    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('#{item.observacao}')">
-									         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.produto.nome}" title="#{item.produto.nome}" />
-								        </div>
-								    </p:column>
-								    <p:column width="25px;" headerText="Loc.">
-								        <h:outputText value="#{item.quantidadeMesa}" />
-								    </p:column>
-								    <p:column width="25px;" headerText="Via.">
-								        <h:outputText value="#{item.quantidadeViagem}" />
-								    </p:column>
-								    <p:column headerText="Status">
-								        <p:selectOneMenu onchange="pararAtualizacao();" id="produto" value="#{item.situacaoPedido}">
-								            <f:selectItems value="#{bebidaListagemBean.situacoes}" />
-								            <f:ajax event="change" execute="@this" render="@form" listener="#{bebidaListagemBean.atualizarItem(pedido.id, item.id)}" />
-								        </p:selectOneMenu>
-								    </p:column>
-								</p:dataTable>
-							</p:fieldset>
-						</div>
-					</c:forEach>
+					<h:panelGroup rendered="#{not empty bebidaListagemBean.pedidos}">
+						<c:forEach var="pedido" items="#{bebidaListagemBean.pedidos}">
+							<div class="divFilha">
+								<p:fieldset legend="#{pedido.cliente}" >
+									<h:panelGrid columns="2" style="margin-bottom:10px">
+										<p:commandButton style="float: right;" styleClass="button" value="Enviar Todos"> 
+											<f:ajax event="click" listener="#{bebidaListagemBean.enviarTodos(pedido.id)}" render="bebidas" />
+										</p:commandButton>
+									</h:panelGrid>
+									<p:dataTable var="item" value="#{pedido.pedidos}" emptyMessage="Sem pedidos">
+									    <p:column headerText="Beb.">
+										    <div style="background-color: #{item.situacaoPedido.corFundo}" onclick="alert('#{item.observacao}')">
+										         <h:outputText value="(!) " rendered="#{not empty item.observacao}" /><h:outputText value="#{item.produto.nome}" title="#{item.produto.nome}" />
+									        </div>
+									    </p:column>
+									    <p:column width="25px;" headerText="Loc.">
+									        <h:outputText value="#{item.quantidadeMesa}" />
+									    </p:column>
+									    <p:column width="25px;" headerText="Via.">
+									        <h:outputText value="#{item.quantidadeViagem}" />
+									    </p:column>
+									    <p:column headerText="Status">
+									        <p:selectOneMenu onchange="pararAtualizacao();" id="produto" value="#{item.situacaoPedido}">
+									            <f:selectItems value="#{bebidaListagemBean.situacoes}" />
+									            <f:ajax event="change" execute="@this" render="@form" listener="#{bebidaListagemBean.atualizarItem(pedido.id, item.id)}" />
+									        </p:selectOneMenu>
+									    </p:column>
+									</p:dataTable>
+								</p:fieldset>
+							</div>
+						</c:forEach>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{empty bebidaListagemBean.pedidos}">
+					Nenhum pedido de bebida no momento
+					</h:panelGroup>
 				</div>
 				<p:dialog header="Alterar Quantidade" widgetVar="modalQuant" modal="true" resizable="false" closable="false" minWidth="500" width="500" height="250">
 				    <h:panelGroup id="camposEdicao">

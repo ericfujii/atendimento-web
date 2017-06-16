@@ -32,7 +32,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 		sql.append("FROM Produto p ");
 		sql.append("JOIN FETCH p.itensPedidos ip ");
 		sql.append("JOIN FETCH ip.pedido ped ");
-		sql.append("JOIN FETCH ped.usuario us ");
+		sql.append("LEFT JOIN FETCH ped.usuario us ");
 		sql.append("JOIN FETCH p.produtoTipo pt ");
 		sql.append("WHERE pt.bebida = false AND ip.situacaoPedido !=:_situacao ORDER BY p.ordem, ped.dataHoraCadatro ASC ");
 		
@@ -46,7 +46,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 		sql.append("FROM Produto p ");
 		sql.append("JOIN FETCH p.itensPedidos ip ");
 		sql.append("JOIN FETCH ip.pedido ped ");
-		sql.append("JOIN FETCH ped.usuario us ");
+		sql.append("LEFT JOIN FETCH ped.usuario us ");
 		sql.append("JOIN FETCH p.produtoTipo pt ");
 		sql.append("WHERE pt.bebida = false ORDER BY p.ordem, ped.dataHoraCadatro DESC ");
 		
@@ -58,7 +58,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 		StringBuilder sql = new StringBuilder("SELECT DISTINCT p ");
 		sql.append("FROM Produto p ");
 		sql.append("JOIN FETCH p.produtoTipo pt ");
-		sql.append("ORDER BY p.ordem ");
+		sql.append("ORDER BY pt.ordem, p.ordem ");
 		
 		return getEm().createQuery(sql.toString(), Produto.class)
 		.getResultList();

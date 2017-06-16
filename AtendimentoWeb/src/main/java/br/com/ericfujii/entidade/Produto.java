@@ -61,6 +61,22 @@ public class Produto {
 	@Transient
 	private Integer pendentesTotal;
 	
+	@XmlTransient
+	@Transient
+	private Integer quantidadeLocal = 0;
+	
+	@XmlTransient
+	@Transient
+	private Integer quantidadeViagem = 0;
+	
+	@XmlTransient
+	@Transient
+	private String observacao;
+	
+	@XmlTransient
+	@Transient
+	private Boolean viagem = false;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -114,5 +130,39 @@ public class Produto {
 	}
 	public void setPendentesTotal(Integer pendentesTotal) {
 		this.pendentesTotal = pendentesTotal;
+	}
+	public Integer getQuantidadeLocal() {
+		return quantidadeLocal;
+	}
+	public Integer getQuantidadeViagem() {
+		return quantidadeViagem;
+	}
+	public Boolean getViagem() {
+		return viagem;
+	}
+	public void setViagem(Boolean viagem) {
+		this.viagem = viagem;
+	}
+	public String getObservacao() {
+		return observacao;
+	}
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+	public void adicionarLocal() {
+		quantidadeLocal ++;
+	}
+	public void removerLocal() {
+		if (quantidadeLocal >= 1) {
+			quantidadeLocal --;
+		}
+	}
+	public void adicionarViagem() {
+		quantidadeViagem ++;
+	}
+	public void removerViagem() {
+		if (quantidadeViagem >= 1) {
+			quantidadeViagem --;
+		}
 	}
 }

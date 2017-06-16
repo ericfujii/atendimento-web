@@ -19,6 +19,7 @@ public class ProdutoTipoDAO extends BaseDAO<ProdutoTipo> {
 		StringBuilder sql = new StringBuilder("SELECT DISTINCT pt ");
 		sql.append("FROM ProdutoTipo pt ");
 		sql.append("JOIN FETCH pt.produtos prod ");
+		sql.append("ORDER BY pt.ordem, prod.ordem ASC ");
 		
 		return getEm().createQuery(sql.toString(), ProdutoTipo.class)
 			.getResultList();
