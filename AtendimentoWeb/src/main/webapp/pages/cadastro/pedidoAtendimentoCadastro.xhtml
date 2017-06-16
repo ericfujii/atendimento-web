@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" >
+	
+	<h:head>
+		<meta name="viewport" content="width=400, user-scalable=no"/>
+		<link type="text/css" rel="stylesheet" href="/AtendimentoWeb/faces/style/principal.css" />
+	</h:head>
+
+	<body>
+		<ui:include src="../../menu.xhtml" />
+		<div id="conteudo">
+			<h:form prependId="false">
+				<h:panelGroup id="camposCadastro">
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+					<p:fieldset legend="Pedido" style="margin-bottom: 10px;">
+						<h:panelGrid columns="2" style="margin-bottom:10px">
+					        <p:outputLabel for="tipoPedido" value="Tipo Pedido:" />
+					        <p:selectOneRadio id="tipoPedido" value="#{pedidoAtendimentoCadastroBean.tipoPedido}" style="margin-right: 20px;">
+					            <f:selectItems value="#{pedidoAtendimentoCadastroBean.tiposPedido}" />
+					            <f:ajax render="clientePG" event="change" execute="@this" listener="#{pedidoAtendimentoCadastroBean.alterarTipo}" />
+					        </p:selectOneRadio>
+					    </h:panelGrid>
+					    <h:panelGrid columns="2" style="margin-bottom:10px" id="clientePG">
+					        <p:outputLabel id="labelCliente" value="#{pedidoAtendimentoCadastroBean.labelCliente}" />
+							<p:inputText type="number" id="mesa" value="#{pedidoAtendimentoCadastroBean.pedido.cliente}" rendered="#{pedidoAtendimentoCadastroBean.tipoPedido == 'MESA'}" />
+							<p:inputText id="balcao" value="#{pedidoAtendimentoCadastroBean.pedido.cliente}" rendered="#{pedidoAtendimentoCadastroBean.tipoPedido == 'BALCAO'}" />
+					    </h:panelGrid>
+				    </p:fieldset>
+				    <h:panelGroup id="produtosPG" rendered="#{!pedidoAtendimentoCadastroBean.avancar}">
+				    	<p:tabView value="#{pedidoAtendimentoCadastroBean.produtoTipos}" var="produtoTipo">
+					    	<p:tab title="#{produtoTipo.nome}">
+						   	 	<p:repeat var="produto" value="#{pedidoAtendimentoCadastroBean.produtos.get(produtoTipo)}">
+				    	  			<h:panelGrid columns="1" style="margin-bottom:10px; font-weight:bold;">
+								        <p:outputLabel value="#{produto.nome}: " />
+					    			</h:panelGrid>
+					    			<h:panelGrid columns="4" style="margin-bottom:10px">
+								        <p:outputLabel value="Local: " />
+								        <h:outputText style="width:50px" value="#{produto.quantidadeLocal}" />
+						        		<p:commandButton style="margin-left: 5px;" value="-"> 
+											<f:ajax event="click" listener="#{produto.removerLocal()}" execute="produtosPG" render="produtosPG" />
+										</p:commandButton>
+										<p:commandButton style="margin-left: 5px;" value="+"> 
+											<f:ajax event="click" listener="#{produto.adicionarLocal()}" execute="produtosPG" render="produtosPG" />
+										</p:commandButton>
+					    			</h:panelGrid>
+					    			<h:panelGrid columns="4" style="margin-bottom:10px">
+								        <p:outputLabel value="Viagem: " />
+								        <h:outputText style="width:50px" value="#{produto.quantidadeViagem}" />
+						        		<p:commandButton style="margin-left: 5px;" value="-"> 
+											<f:ajax event="click" listener="#{produto.removerViagem()}" execute="produtosPG" render="produtosPG" />
+										</p:commandButton>
+										<p:commandButton style="margin-left: 5px;" value="+"> 
+											<f:ajax event="click" listener="#{produto.adicionarViagem()}" execute="produtosPG" render="produtosPG" />
+										</p:commandButton>
+					    			</h:panelGrid>
+					    			<h:panelGrid columns="2" style="margin-bottom:20px">
+								        <p:outputLabel value="Obs: " />
+								        <h:inputText style="width:200px" value="#{produto.observacao}" />
+					    			</h:panelGrid>
+				    			</p:repeat>
+						    </p:tab>
+						</p:tabView>
+					    <p:commandButton styleClass="button"  value="Avançar"> 
+							<f:ajax event="click" listener="#{pedidoAtendimentoCadastroBean.avancarFormulario()}" execute="camposCadastro" render="camposCadastro resumoPG" />
+						</p:commandButton>
+				    </h:panelGroup>
+			    </h:panelGroup>
+			    <h:panelGroup id="resumoPG">
+				    <h:panelGroup rendered="#{pedidoAtendimentoCadastroBean.avancar}">
+					    <p:fieldset legend="Itens Adicionados" style="margin-bottom: 10px;">
+					    	<h:panelGrid style="width: 100%">
+					    		<p:commandButton style="float: left;" styleClass="button" value="Voltar"> 
+									<f:ajax event="click" execute="camposCadastro" listener="#{pedidoAtendimentoCadastroBean.voltar()}" render="camposCadastro resumoPG" />
+								</p:commandButton>
+						    	<p:commandButton style="float: left;" styleClass="button" id="fecharPedido" value="Fechar Pedido"> 
+									<f:ajax event="click" execute="camposCadastro" listener="#{pedidoAtendimentoCadastroBean.fecharPedido()}" render="camposCadastro resumoPG" />
+								</p:commandButton>
+							</h:panelGrid>
+					    	<p:dataTable id="tabelaProdutos" var="item" value="#{pedidoAtendimentoCadastroBean.itensAdicionados}" rowIndexVar="i" emptyMessage="Nenhum item adicionado">
+							    <p:column headerText="Produto" width="100px;">
+							        <h:outputText value="#{item.produto.nome}" />
+							    </p:column>
+							    
+							    <p:column headerText="Local" width="50px;">
+							        <h:outputText value="#{item.quantidadeMesa == 0 ? '-' : item.quantidadeMesa }" />
+							    </p:column>
+							    
+							    <p:column headerText="Viagem" width="50px;">
+							        <h:outputText value="#{item.quantidadeViagem == 0 ? '-' : item.quantidadeViagem }" />
+							    </p:column>
+							</p:dataTable>
+					    </p:fieldset>
+				    </h:panelGroup>
+			    </h:panelGroup>
+    		</h:form>
+		</div>
+	</body>
+	
+</html>
