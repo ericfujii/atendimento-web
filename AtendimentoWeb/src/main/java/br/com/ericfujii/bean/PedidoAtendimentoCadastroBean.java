@@ -67,6 +67,7 @@ public class PedidoAtendimentoCadastroBean {
 			SelectItem selectItem = new SelectItem(tipoPedido, tipoPedido.toString());
 			tiposPedido.add(selectItem);
 		}
+		alterarTipo();
 	}
 	
 	public void adicionarItem() {

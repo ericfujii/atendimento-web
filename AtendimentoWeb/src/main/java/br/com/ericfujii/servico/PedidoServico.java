@@ -1,5 +1,6 @@
 package br.com.ericfujii.servico;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,8 @@ public class PedidoServico extends BaseServico<Pedido> {
 	}
 	
 	public List<Pedido> obterPedidosBebida(String ordem) {
-		return pedidoDAO.consultarPedidosBebidas(ordem);
+		Calendar periodo = Calendar.getInstance();
+		periodo.add(Calendar.HOUR, -2);
+		return pedidoDAO.consultarPedidosBebidas(ordem, periodo);
 	}
 }

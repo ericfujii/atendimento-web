@@ -1,5 +1,6 @@
 package br.com.ericfujii.servico;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +31,9 @@ public class ProdutoServico extends BaseServico<Produto> {
 	}
 	
 	public List<Produto> obterHistoricoComidas() {
-		return produtoDAO.consultarHistoricoComidas();
+		Calendar periodo = Calendar.getInstance();
+		periodo.add(Calendar.HOUR, -2);
+		return produtoDAO.consultarHistoricoComidas(periodo);
 	}
 	
 	public List<Produto> obterTodosCompleto() {

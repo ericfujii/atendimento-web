@@ -1,5 +1,6 @@
 package br.com.ericfujii.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.ericfujii.entidade.ESituacaoPedido;
@@ -41,17 +42,22 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 				.getResultList();
 	}
 	
-	public List<Produto> consultarHistoricoComidas() {
+	public List<Produto> consultarHistoricoComidas(Calendar periodo) {
 		StringBuilder sql = new StringBuilder("SELECT DISTINCT p ");
 		sql.append("FROM Produto p ");
 		sql.append("JOIN FETCH p.itensPedidos ip ");
 		sql.append("JOIN FETCH ip.pedido ped ");
 		sql.append("LEFT JOIN FETCH ped.usuario us ");
 		sql.append("JOIN FETCH p.produtoTipo pt ");
-		sql.append("WHERE pt.bebida = false ORDER BY p.ordem, ped.dataHoraCadatro DESC ");
+		sql.append("WHERE pt.bebida = false ");
+		sql.append("AND ped.dataHoraCadatro BETWEEN :_inicio AND :_fim ");
+		sql.append("ORDER BY p.ordem, ped.dataHoraCadatro DESC ");
 		
-		return getEm().createQuery(sql.toString(), Produto.class).setMaxResults(10)
-		.getResultList();
+		return getEm()
+				.createQuery(sql.toString(), Produto.class)
+				.setParameter("_inicio", periodo)
+				.setParameter("_fim", Calendar.getInstance())
+				.getResultList();
 	}
 	
 	public List<Produto> consultarTodosCompleto() {
